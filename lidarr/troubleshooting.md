@@ -2,90 +2,27 @@
 title: Lidarr Troubleshooting
 description: 
 published: true
-date: 2023-07-24T19:53:24.970Z
-tags: lidarr, needs-love, troubleshooting
+date: 2025-01-19T14:15:07.301Z
+tags: 
 editor: markdown
 dateCreated: 2021-06-14T21:36:46.193Z
 ---
 
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [Asking for Help](#asking-for-help)
-- [Logging and Log Files](#logging-and-log-files)
-  - [Standard Logs Location](#standard-logs-location)
-  - [Update Logs Location](#update-logs-location)
-  - [Sharing Logs](#sharing-logs)
-  - [Trace/Debug Logs](#tracedebug-logs)
-  - [Clearing Logs](#clearing-logs)
-- [Multiple Log Files](#multiple-log-files)
-- [Recovering from a Failed Update](#recovering-from-a-failed-update)
-  - [Determine the issue](#determine-the-issue)
-    - [Migration Issue](#migration-issue)
-    - [Permission Issue](#permission-issue)
-  - [Resolving the issue](#resolving-the-issue)
-    - [Permissions Issues](#permissions-issues)
-    - [Manually upgrading](#manually-upgrading)
-- [Downloads and Importing](#downloads-and-importing)
-  - [Testing the Download Client](#testing-the-download-client)
-  - [Testing a Download](#testing-a-download)
-  - [Testing an Import](#testing-an-import)
-  - [Common Problems](#common-problems)
-    - [Download Client's WebUI is not enabled](#download-clients-webui-is-not-enabled)
-    - [SSL in use and incorrectly configured](#ssl-in-use-and-incorrectly-configured)
-    - [Can’t see share on Windows](#cant-see-share-on-windows)
-    - [Mapped network drives are not reliable](#mapped-network-drives-are-not-reliable)
-    - [Docker and user, group, ownership, permissions and paths](#docker-and-user-group-ownership-permissions-and-paths)
-    - [Remote Path Mapping](#remote-path-mapping)
-      - [Remote Mount or Remote Sync (Syncthing)](#remote-mount-or-remote-sync-syncthing)
-    - [Permissions on the Library Folder](#permissions-on-the-library-folder)
-    - [Permissions on the Downloads Folder](#permissions-on-the-downloads-folder)
-    - [Download folder and library folder not different folders](#download-folder-and-library-folder-not-different-folders)
-    - [Incorrect category](#incorrect-category)
-    - [Packed torrents](#packed-torrents)
-    - [Repeated downloads](#repeated-downloads)
-    - [Usenet download misses import](#usenet-download-misses-import)
-    - [Download client clearing items](#download-client-clearing-items)
-    - [Download cannot be matched to a library item](#download-cannot-be-matched-to-a-library-item)
-    - [Connection Timed Out](#connection-timed-out)
-  - [Problem Not Listed](#problem-not-listed)
-- [Searches Indexers and Trackers](#searches-indexers-and-trackers)
-  - [Turn logging up to trace](#turn-logging-up-to-trace)
-  - [Testing an Indexer or Tracker](#testing-an-indexer-or-tracker)
-  - [Testing a Search](#testing-a-search)
-  - [Common Problems](#common-problems-1)
-    - [Media is Unmonitored](#media-is-unmonitored)
-    - [Tracker needs RawSearch Caps](#tracker-needs-rawsearch-caps)
-    - [Wrong categories](#wrong-categories)
-    - [Wrong results](#wrong-results)
-    - [Query Successful - No Results returned](#query-successful-no-results-returned)
-    - [Missing Results](#missing-results)
-    - [Certificate validation](#certificate-validation)
-    - [Hitting rate limits](#hitting-rate-limits)
-    - [IP Ban](#ip-ban)
-    - [Using the Jackett /all endpoint](#using-the-jackett-all-endpoint)
-    - [Using NZBHydra2 as a single entry](#using-nzbhydra2-as-a-single-entry)
-    - [Problem Not Listed](#problem-not-listed-1)
-  - [Errors](#errors)
-    - [The underlying connection was closed: An unexpected error occurred on a send](#the-underlying-connection-was-closed-an-unexpected-error-occurred-on-a-send)
-    - [The request timed out](#the-request-timed-out)
-    - [Problem Not Listed](#problem-not-listed-2)
-
 # Asking for Help
 
-Do you need help? That's okay, everyone needs help sometimes. You can get real time help via chat on
+Need help? That's okay; everyone needs assistance sometimes. You can get real-time help via chat on Discord.
 
 - [<i class="fab fa-discord"></i>&emsp;Discord *Official Lidarr Discord*](https://lidarr.audio/discord)
-- [<i class="fab fa-reddit"></i>&emsp;Reddit *Official Lidarr Subreddit*](https://reddit.com/r/lidarr)
 {.links-list}
 
-But before you go there and post, be sure your request for help is the best it can be. Clearly describe the problem and briefly describe your setup, including things like your OS/distribution, version of .NET, version of Lidarr, download client and its version. **If you are using [Docker](https://www.docker.com/) please run through [Docker Guide](/docker-guide) first as that will solve common and frequent path/permissions issues. Otherwise please have a [docker compose](/docker-guide#docker-compose) handy. [How to Generate a Docker Compose](https://trash-guides.info/compose)** Tell us about what you've tried already, what you've looked at. Use the [Logging and Log Files section](#logging-and-log-files) to turn your logging up to trace, recreate the issue, pastebin the relevant context and include a link to it in your post. Maybe even include some screen shots to highlight the issue.
+Before posting, ensure your request for help is clear. Clearly describe the problem and briefly describe your setup, including things like your OS/distribution, version of .NET, version of Lidarr, download client and its version. **If you are using [Docker](https://www.docker.com/) please run through [Docker Guide](/docker-guide) first as that will solve common and frequent path/permissions issues. Otherwise please have a [docker compose](/docker-guide#docker-compose) handy. [How to Generate a Docker Compose](https://trash-guides.info/compose)** Tell us about what you've tried already, what you've looked at. Use the [Logging and Log Files section](#logging-and-log-files) to turn your logging up to trace, recreate the issue, pastebin the relevant context and include a link to it in your post. Maybe even include some screen shots to highlight the issue.
 
 The more we know, the easier it is to help you.
 
 # Logging and Log Files
 
 It is likely beneficial to also review the Common Troubleshooting problems:
+
 - [Downloads and Importing Common Problems](#common-problems)
 - [Searching Indexers and Trackers Common Problems](#common-problems-1)
 {.links-list}
@@ -109,6 +46,7 @@ To provide good and useful logs for sharing:
 6. Use [Gist](https://gist.github.com/), [0bin (**Be sure to disable colorization**)](https://0bin.net/), [PrivateBin](https://privatebin.net/), [Notifiarr PrivateBin](http://logs.notifiarr.com/), [Hastebin](https://hastebin.com/), [Ubuntu's Pastebin](https://pastebin.ubuntu.com/), or similar sites - excluding those noted to avoid below - to share the copied logs from above
 
 **Warnings:**
+
 - **Do not use [pastebin.com](https://pastebin.com) as their filters have a tendency to block the logs.
 - Do not use [pastebin.pl](https://pastebin.pl) as their site is frequently not accessible.
 - Do not use [JustPasteIt](https://justpaste.it/) as their site does not facilitate reviewing logs.
@@ -118,6 +56,7 @@ To provide good and useful logs for sharing:
 - Do not share console output, docker container output, or anything other than the application logs specified
 
 **Important Note:**
+
 - When using [0bin](https://0bin.net/), be sure to disable colorization and do not burn after reading.
 
 - Alternatively If you're looking for a specific entry in an old log file but aren't sure which one you can use N++. You can use the Notepad++ "Find in Files" function to search old log files as needed.
@@ -298,7 +237,7 @@ Thus `/volume3/data` does not exist within Lidarr's container or is not accessib
   - Sync at a lower, common folder that contains both incomplete and complete.
   - Sync to a location that is on the same file system locally as your library and looks like it (docker and network shares make this easy to misconfigure)
   - You want to sync the incomplete and complete so that when the torrent client does the move, that is reflected locally and all the files are already "there" (even if they're still downloading). Then you want to use hard links because even if it imports before its done, they'll still finish.
-  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hardlink possible means that is still okay.
+  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hard link possible means that is still okay.
   - (Optional - if applicable and/or required (e.g. remote usenet client)) Configure a custom script to run on import/download/upgrade to remove the remote file
 - Alternatively a remote mount rather than a remote sync setup is significantly less complicated to configure, but typically slowly.
   - Mount your remote storage with sshfs or another network file system protocol
@@ -332,7 +271,7 @@ Logs will look like
 2022-02-28 18:51:01.1|Error|DownloadedTracksImportService|Import failed, path does not exist or is not accessible by Lidarr: /data/downloads/music/Party of Two - Jasmine Guillory.mp3. Ensure the path exists and the user running Lidarr has the correct permissions to access this file/folder
 ```
 
-Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that runs as needs to be able to read and write the downloads folder.
+Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist - and if docker that the mounts are aligned and consistent. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that runs as needs to be able to read and write the downloads folder.
 
 - For Windows Users this may be due to running as a service:
   - the Windows Service runs under the 'Local Service' account, by default this account does not have permissions to access your user's home directory unless permissions have been assigned manually. This is particularly relevant when using download clients that are configured to download to your home directory.
@@ -470,6 +409,10 @@ Full section of Trace Log for a Manual Search Needed
 
 Below are some common problems.
 
+### Unable to Load Search Results
+
+Most likely you're using a reverse proxy and you reverse proxy timeout is set too short before \*Arr has completed the search query. Increase the timeout and try again.
+
 ### Media is Unmonitored
 
 The song(s) is(are) not monitored.
@@ -511,8 +454,6 @@ You’ll be connecting to most indexers/trackers via https, so you’ll need tha
 ### Hitting rate limits
 
 If you run your through a VPN or proxy, you may be competing with 10s or 100s or 1000s of other people all trying to use services like , theXEM ,and/or your indexers and trackers. Rate limiting and DDOS protection are often done by IP address and your VPN/proxy exit point is *one* IP address. Unless you’re in a repressive country like China, Australia or South Africa you don’t need to VPN/proxy .
-
-Rarbg has a tendency to have some sort of rate limiting within their API and displays as responding with no results.
 
 ### IP Ban
 

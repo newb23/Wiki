@@ -2,7 +2,7 @@
 title: Docker Guide
 description: Servarr Docker Guide - Overview of Docker Concepts, Hardlink Concepts, and Linux Ownership and Permissions
 published: true
-date: 2023-07-15T20:41:38.016Z
+date: 2024-03-13T11:21:23.126Z
 tags: 
 editor: markdown
 dateCreated: 2021-05-16T20:23:46.192Z
@@ -37,6 +37,9 @@ dateCreated: 2021-05-16T20:23:46.192Z
 - [Helpful commands](#helpful-commands)
   - [List running containers](#list-running-containers)
   - [Shell *inside* a container](#shell-inside-a-container)
+    - [Examples as Specific Users](#examples-as-specific-users)
+      - [LSIO Radarr](#lsio-radarr)
+      - [Hotio Sonarr](#hotio-sonarr)
   - [Prune Docker](#prune-docker)
   - [Get docker run command](#get-docker-run-command)
   - [Get docker-compose](#get-docker-compose)
@@ -54,9 +57,11 @@ dateCreated: 2021-05-16T20:23:46.192Z
   - [Running Docker containers with umask 000](#running-docker-containers-with-umask-000)
 - [Getting Help](#getting-help)
   - [Chat Support (Discord)](#chat-support-discord)
-  - [Forum Support (Reddit)](#forum-support-reddit)
 
 # The Best Docker Setup
+
+> `Multiple users and a shared group` does not apply to Unraid which does things a little differently and runs all containers as `nobody:users`. See TRaSH's Hardlink's Unraid Guide for details and the `Consistent and well planned paths` section that does apply.
+{.is-info}
 
 **TL;DR**: An [eponymous](https://www.dictionary.com/browse/eponymous) user per daemon and a shared group with a umask of `002`. Consistent path definitions between *all* containers that maintains the folder structure. Using one volume (so the download folder and library folder are on the same file system)  makes [hardlinks](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/#what-are-hardlinks) and [instant moves (atomic moves)](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/#what-are-instant-moves-atomic-moves) possible for Sonarr, Radarr, Lidarr and Readarr. And most of all, ignore *most* of the Docker image’s path documentation!
 
@@ -89,6 +94,9 @@ This article will not show you specifics about the best Docker setup, but it des
 
 # Multiple users and a shared group
 
+> This does not apply to Unraid which does things a little differently and runs all containers as `nobody:users` and should generally be the same single user and single group.
+{.is-info}
+
 ## Permissions
 
 Ideally, each software runs as its own user and they are all part of a shared group with folder permissions set to `775` (`drwxrwxr-x`) and files set to `664` (`-rw-rw-r--`), which is a umask of `002`. A sane alternative to this is a single shared user, which would use `755` and `644` which is a umask of `022`. You can restrict permissions even more by denying read from “other”, which would be a umask of `007` for a user per daemon or `077` for a single shared user. For a deeper explanation, try the Arch Linux wiki articles about [file permissions and attributes](https://wiki.archlinux.org/index.php/File_permissions_and_attributes) and [UMASK](https://wiki.archlinux.org/index.php/Umask).
@@ -120,7 +128,7 @@ Don’t forget that your `/config` volume will *also* need to have correct owner
 
 The easiest and most important detail is to create unified path definitions across all the containers.
 
-If you’re wondering why hardlinks aren’t working or why a simple move is taking far longer than it should, this section explains it. The paths you use on the *inside* matter. Because of how Docker’s volumes work, passing in two volumes such as the commonly suggested `/tv`, `/movies`, and `/downloads` makes them look like two different file systems, even if they are a single file system outside the container. This means hardlinks won’t work *and* instead of an instant/atomic move, a slower and more IO intensive copy+delete is used. If you have multiple download clients because you’re using torrents and usenet, having a single `/downloads` path means they’ll be mixed up. Because the Radarr in one container will ask the NZBGet in its own container where files are, using the same path in both means it will all just work. If you don’t, you’d need to fix it with a remote path map.
+If you’re wondering why hard links aren’t working or why a simple move is taking far longer than it should, this section explains it. The paths you use on the *inside* matter. Because of how Docker’s volumes work, passing in two volumes such as the commonly suggested `/tv`, `/movies`, and `/downloads` makes them look like two different file systems, even if they are a single file system outside the container. This means hard links won’t work *and* instead of an instant/atomic move, a slower and more IO intensive copy+delete is used. If you have multiple download clients because you’re using torrents and usenet, having a single `/downloads` path means they’ll be mixed up. Because the Radarr in one container will ask the NZBGet in its own container where files are, using the same path in both means it will all just work. If you don’t, you’d need to fix it with a remote path map.
 
 So pick *one* path layout and use it for all of them. It's suggested to use `/data`, but there are other  common names like `/shared`, `/media` or `/dvr`. Keeping this the same on the outside *and* inside will make your setup simpler: one path to remember or if integrating Docker and native software. For example, Synology might use `/Volume1/data` and unRAID might use `/mnt/user/data` on the outside, but `/data` on the inside is fine.
 
@@ -234,7 +242,7 @@ This is the best option for most users, it lets you control and configure many c
 ```yml
     # sonarr
     Sonarr:
-        image: cr.hotio.dev/hotio/sonarr
+        image: ghcr.io/hotio/sonarr
         volumes:
             - /path/to/config/sonarr:/config
             - /host/data:/data
@@ -256,7 +264,7 @@ This is the best option for most users, it lets you control and configure many c
 
     # SABnzbd
     SABnzbd:
-        image: cr.hotio.dev/hotio/sabnzbd
+        image: ghcr.io/hotio/sabnzbd
         volumes:
             - /path/to/config/sabnzbd:/config
             - /host/data/usenet:/data/usenet
@@ -267,7 +275,7 @@ This is the best option for most users, it lets you control and configure many c
 
     # plex
     Plex:
-        image: cr.hotio.dev/hotio/plex
+        image: ghcr.io/hotio/plex
         volumes:
             - /path/to/config/plex:/config
             - /host/data/media:/data/media
@@ -302,7 +310,7 @@ This is the best option for most users, it lets you control and configure many c
     docker run -v /path/to/config/sonarr:/config \
                -v /host/data:/data \
                -e PUID=111 -e PGID=321 -e UMASK=002 \
-               cr.hotio.dev/hotio/sonarr
+               ghcr.io/hotio/sonarr
 
     # deluge
     docker run -v /path/to/config/deluge:/config \
@@ -314,13 +322,13 @@ This is the best option for most users, it lets you control and configure many c
     docker run -v /path/to/config/sabnzbd:/config \
                -v /host/data/usenet:/data/usenet \
                -e PUID=333 -e PGID=321 -e UMASK=002 \
-               cr.hotio.dev/hotio/sabnzbd
+               ghcr.io/hotio/sabnzbd
 
     # plex
     docker run -v /path/to/config/plex:/config \
                -v /host/data/media:/data/media \
                -e PUID=444 -e PGID=321 -e UMASK=002 \
-               cr.hotio.dev/hotio/plex
+               ghcr.io/hotio/plex
 ```
 
 ## Systemd
@@ -489,7 +497,6 @@ Most Docker images don’t have many useful tools in them for troubleshooting, b
   - [NZBGet](https://hotio.dev/containers/nzbget/)
   - [SABnzbd](https://hotio.dev/containers/sabnzbd/)
   - [qflood](https://hotio.dev/containers/qflood/)
-  - [ombi](https://hotio.dev/containers/ombi) for requesting media
   - [overseerr](https://hotio.dev/containers/overseerr/) for requesting media
   - [jackett](https://hotio.dev/containers/jackett) for torrent tracker searching
   - [nzbhydra2](https://hotio.dev/containers/nzbhydra2) for usenet indexer searching
@@ -518,7 +525,7 @@ Most Docker images don’t have many useful tools in them for troubleshooting, b
   - [lidarr](https://hub.docker.com/r/binhex/arch-lidarr/)
 {.links-list}
 
-### All-in-One Solutions
+## All-in-One Solutions
 
 - [This is a GitHub repository](https://github.com/Luctia/ezarr) aimed at beginners who want to use Docker for their Servarr stack. It is basically a ready-to-go collection of files and only requires you to run two things to get the entire thing online. It removes the hassle around user management and permissions on the host device and features some other applications like PleX.
 

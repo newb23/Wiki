@@ -2,7 +2,7 @@
 title: Radarr Settings
 description: Description of Radarr's Settings Menus
 published: true
-date: 2023-08-27T22:02:11.780Z
+date: 2025-01-03T03:39:01.266Z
 tags: radarr, needs-love, settings
 editor: markdown
 dateCreated: 2021-05-29T15:57:25.304Z
@@ -14,6 +14,8 @@ dateCreated: 2021-05-29T15:57:25.304Z
 - [Menu options](#menu-options)
 - [Media Management](#media-management)
   - [Community Naming Suggestions](#community-naming-suggestions)
+    - [Movie Files](#movie-files)
+    - [Movie Folders](#movie-folders)
   - [Movie Naming](#movie-naming)
     - [Standard Movie Format](#standard-movie-format)
     - [Movie Naming](#movie-naming-1)
@@ -41,6 +43,7 @@ dateCreated: 2021-05-29T15:57:25.304Z
         - [Example 1](#example-1)
         - [Example 2](#example-2)
         - [Example 3](#example-3)
+  - [Release Profiles](#release-profiles)
 - [Quality](#quality-1)
   - [Quality Table Meanings](#quality-table-meanings)
   - [Qualities Defined](#qualities-defined)
@@ -49,8 +52,8 @@ dateCreated: 2021-05-29T15:57:25.304Z
     - [Modifiers](#modifiers)
     - [Conditions](#conditions)
     - [Profiling Settings and Ranking](#profiling-settings-and-ranking)
-      - [Importing / Exporting Custom Formats](#importing-exporting-custom-formats)
-      - [Importing / Updating Existing Custom Formats](#importing-updating-existing-custom-formats)
+      - [Importing / Exporting Custom Formats](#importing--exporting-custom-formats)
+      - [Importing / Updating Existing Custom Formats](#importing--updating-existing-custom-formats)
     - [Collection of Custom Formats](#collection-of-custom-formats)
 - [Indexers](#indexers)
   - [Supported Indexers](#supported-indexers)
@@ -59,7 +62,6 @@ dateCreated: 2021-05-29T15:57:25.304Z
     - [Torrent Tracker Configuration](#torrent-tracker-configuration)
       - [Indexer Flags](#indexer-flags)
   - [Options](#options)
-  - [Restrictions](#restrictions)
 - [Download Clients](#download-clients)
   - [Overview](#overview)
   - [Download Client Processes](#download-client-processes)
@@ -128,11 +130,7 @@ Also, note that for each individual settings page, there are some options at the
 
 - Radarr v4.2.2.6489 or newer
 
-`{Movie CleanTitle} {(Release Year)} {imdb-{ImdbId}} {edition-{Edition Tags}} {[Custom Formats]}{[Quality Full]}{[MediaInfo 3D]}{[MediaInfo VideoDynamicRangeType]}{[Mediainfo AudioCodec}{ Mediainfo AudioChannels}]{MediaInfo AudioLanguages}[{Mediainfo VideoCodec}]{-Release Group}`
-
-- Older Radarr Versions
-
-`{Movie CleanTitle} {(Release Year)} {Edition Tags} [imdb-{ImdbId}]{[Custom Formats]}{[Quality Full]}{[MediaInfo 3D]}{[MediaInfo VideoDynamicRangeType]}{[Mediainfo AudioCodec}{ Mediainfo AudioChannels}][{Mediainfo VideoCodec}]{-Release Group}`
+`{Movie CleanTitle} {(Release Year)} {imdb-{ImdbId}} {edition-{Edition Tags}} {[Custom Formats]}{[Quality Full]}{[MediaInfo 3D]}{[MediaInfo VideoDynamicRangeType]}{[Mediainfo AudioCodec}{ Mediainfo AudioChannels]}{[Mediainfo VideoCodec]}{-Release Group}`
 
 ### Movie Folders
 
@@ -145,7 +143,7 @@ Also, note that for each individual settings page, there are some options at the
     - Download Client Import
       - Download Client's Release Title is used
     - Manual (Ad-Hoc) Import: Original File Name
-- Replace Illegal` Characters - If unchecked, Radarr will remove them instead.
+- Replace Illegal Characters - If unchecked, Radarr will remove them instead.
 
   - The characters are: `:` `\` `/` `>` `<` `?` `*` `|` `"`
 - Colon (`:`) Replacement - This setting will dictate how Radarr handles colons within the movie file. This is only available when Replace Illegal Characters is enabled.
@@ -189,7 +187,7 @@ Also, note that for each individual settings page, there are some options at the
 `CleanTitle` [does the following](https://github.com/Radarr/Radarr/blob/5948f564827eabb7afc1e89bf4a5987e3c71dc74/src/NzbDrone.Core/Organizer/FileNameBuilder.cs#L207):
 
 - Replace `&` with `and`
-- Replace `/` and `\` with ` `
+- Replace `/` and `\` with ``
 - Remove `,`,`<`,`>`,`/`,`\`,`;`,`:`,`'`,`|`, `~`,`!`,`?`,`@`,`$`,`%`,`^`,`*`,`-`,`_`,`=` as per the following regex:
 
 ```regex
@@ -524,11 +522,13 @@ Profiles is where Custom Format Scores are configured.
 {.is-info}
 
 - **Any conditions that use RegEx are case insensitive**
-- Note the following GitHub Issues
-  - [Custom Formats do not apply before the Movie Year in release titles #4859](https://github.com/Radarr/Radarr/issues/4859)
-  - [Custom Format doesn't match for term "xvid" at end of release name #6824](https://github.com/Radarr/Radarr/issues/6824)
 - Release Title - This is a regular expression matched against the release title and, after download, the filename on disk.
   - Note: Radarr only considers text after the movie title and year which means anything preceding the title is ignored.
+  - **Known Custom Format Title Parsing Bugs**
+    - [Custom Formats do not apply before the Year in release titles for Grabs and ignore movie title](https://github.com/Radarr/Radarr/issues/4859)
+    - [Custom Format doesn't match for term "xvid" at end of release name as the video extension](https://github.com/Radarr/Radarr/issues/6824)
+    - [CF applied to the name of the film. Movie Title not ignored for Files](https://github.com/Radarr/Radarr/issues/7004)
+    - [Custom format Flag stays after transcoding into other Codec and don't ignore scene name original file title](https://github.com/Radarr/Radarr/issues/7896)
 - Edition - This tag is matched against any Editions Radarr may parse. You can put any value Radarr will try to match that against what it parsed (case-insensitive).
 - Language - This language is matched against any language(s) Radarr parses. All languages previously selectable in profiles work here.
 - [Indexer Flag](/radarr/settings#indexer-flags) - This tag is matched against any Indexer Flags that Radarr may parse.
@@ -627,8 +627,7 @@ Profiles is where Custom Format Scores are configured.
 | `G_DoubleUpload` | ⬆      | Similar to `G_Freeleech`, `G_DoubleUpload` signifies that any amount of data you upload via seeding is counted twice towards your upload quota and ratio. This is very useful, if you want to build up a ratio buffer.      |
 | `PTP_Golden`     | 🌟      | On PassThePopcorn, some torrents are given the *Golden* tag, when they meet certain encoding standards. These are usually the best encodes, with almost no perceptible quality loss. You can learn more on their wiki page. |
 | `PTP_Approved`   | ✔      | On PassThePopcorn, some torrents are approved, when they meet the minimum standards for encoding (e.g., no low bitrates). See their wiki for more information.                                                              |
-| `HDB_Internal`   | 🚪      | Releases on HDBits receive this tag, when the release was uploaded by one of the release groups of HDBits themselves.                                                                                                       |
-| `G_Scene`        | ☠      | Similar to `G_Freeleech`, `G_Freeleech75` signifies that only 25% of the size of this torrent will count towards your download quota or ratio.                                                                              |
+| `G_Scene`        | ☠      | Signifies a release from a SCENE group.                                                                                                                                                                                     |
 | `G_Freeleech75`  | ⇩⬇     | Similar to `G_Freeleech`, `G_Freeleech75` signifies that only 25% of the size of this torrent will count towards your download quota or ratio.                                                                              |
 | `G_Freeleech25`  | ⇩      | Similar to `G_Freeleech`, `G_Freeleech25` signifies that only 75% of the size of this torrent will count towards your download quota or ratio.                                                                              |
 
@@ -644,7 +643,7 @@ Profiles is where Custom Format Scores are configured.
 - Prefer Indexer Flags - Prioritize releases with special flags. (See Required Flags above)
 - Availability Delay - Amount of time before (-#) or after (#) the available date to search for Movie
   - This is helpful to delay searching for a release to give the community time to perform the best encodes.
-  - Typically a Movie Availability of `Released` with a delay of `-21` or `-14` is suggested.
+  - Typically, a Movie Availability of `Released` with a delay of `-21` or `-14` is suggested.
 - RSS Sync interval - Interval in minutes. Set to zero to disable (this will stop all automatic release grabbing) Minimum: 10 minutes Maximum: 120 minutes
   - Please see [How does Radarr find movies?](/radarr/faq#how-does-radarr-find-movies) for a better understanding of how RSS Sync will help you
 
@@ -670,14 +669,14 @@ Profiles is where Custom Format Scores are configured.
 - Radarr will monitor your download clients active downloads that use that category name. It monitors this via your download client's API.
 - When the download is completed, Radarr will know the final file location as reported by your download client. This file location can be almost anywhere, as long as it is somewhere separate from your media folder and accessible by Radarr
 - Radarr will scan that completed file location for files that Radarr can use. It will parse the file name to match it against the requested media. If it can do that, it will rename the file according to your specifications, and move it to the specified media location.
-- Atomic Moves (instant moves) are enabled by default. The file system and mounts must be the same for your completed download directory and your media library. If the the atomic move fails or your setup does not support hardlinks and atomic moves then Radarr will fall back and copy the file then delete from the source which is IO intensive.
+- Atomic Moves (instant moves) are enabled by default. The file system and mounts must be the same for your completed download directory and your media library. If the the atomic move fails or your setup does not support hard links and atomic moves then Radarr will fall back and copy the file then delete from the source which is IO intensive.
 
 ### Torrent Process
 
 - Radarr will send a download request to your client, and associate it with a label or category name that you have configured in the download client settings. Examples: movies, tv, series, music, etc.
 - Radarr will monitor your download clients active downloads that use that category name. This monitoring occurs via your download client's API.
-- Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within Radarr under the specific download client). When files are imported to your media folder Radarr will hardlink the file if supported by your setup or copy if not hardlinks are not supported.
-- Hardlinks are enabled by default. [A hardlink will allow not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hardlink creation fails or your setup does not support hardlinks then Radarr will fall back and copy the file.
+- Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within Radarr under the specific download client). When files are imported to your media folder Radarr will hardlinkthe file if supported by your setup or copy if not hard links are not supported.
+- Hard links are enabled by default. [A hard link will allow not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hard link creation fails or your setup does not support hard links then Radarr will fall back and copy the file.
 - If the "Completed Download Handling - Remove" option is enabled in Radarr's settings, Radarr will delete the original file and torrent from your client, but only if the client reports that seeding is complete and torrent is stopped (i.e. paused).
 
 ## Download Clients
@@ -732,19 +731,19 @@ Select the download client you wish to add, and there will be a pop-up box to en
 
 - Radarr is only able to set the seed ratio/time on clients that support setting this value via their API when the torrent is added. Seed goals can be set globally in the client itself or per tracker in \*Arr settings for each indexer. See the table below for client compatibility.
 
-|      Client       |                                Ratio                                 |                                    Time                                    |
-| :---------------: | :------------------------------------------------------------------: | :------------------------------------------------------------------------: |
-|       Aria2       |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|      Deluge       |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-| Download Station  | ![Not Supported](https://img.shields.io/badge/Supported-No-critical) |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|       Flood       |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-|     Hadouken      | ![Not Supported](https://img.shields.io/badge/Supported-No-critical) |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|    qBittorrent    |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-|     rTorrent      |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-| Torrent Blackhole | ![Not Supported](https://img.shields.io/badge/Supported-No-critical) |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|   Transmission    |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   | ![Idle Limit](https://img.shields.io/badge/Supported-Idle%20Limit*-blue)\* |
-|     uTorrent      |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-|       Vuze        |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
+|      Client       |       Ratio        |                                    Time                                    |
+| :---------------: | :----------------: | :------------------------------------------------------------------------: |
+|       Aria2       | :white_check_mark: |                                    :x:                                     |
+|      Deluge       | :white_check_mark: |                                    :x:                                     |
+| Download Station  |        :x:         |                                    :x:                                     |
+|       Flood       | :white_check_mark: |                             :white_check_mark:                             |
+|     Hadouken      |        :x:         |                                    :x:                                     |
+|    qBittorrent    | :white_check_mark: |                             :white_check_mark:                             |
+|     rTorrent      | :white_check_mark: |                             :white_check_mark:                             |
+| Torrent Blackhole |        :x:         |                                    :x:                                     |
+|   Transmission    | :white_check_mark: | ![Idle Limit](https://img.shields.io/badge/Supported-Idle%20Limit*-blue)\* |
+|     uTorrent      | :white_check_mark: |                             :white_check_mark:                             |
+|       Vuze        | :white_check_mark: |                             :white_check_mark:                             |
 
 > ![Idle Limit](https://img.shields.io/badge/Supported-Idle%20Limit*-blue) - Transmission internally has an Idle Time check, but Radarr compares it with the seeding time if the idle limit is set on a per-torrent basis. This is done as workaround to Transmission’s api limitations.{.is-info}
 
@@ -767,7 +766,7 @@ Select the download client you wish to add, and there will be a pop-up box to en
 
 If you download using a BitTorrent client, the process is slightly different:
 
-- Completed files are left in their original location to allow you to seed. When files are imported to your assigned library folder Radarr will attempt to hardlink the file or fall back to copy (use double space) if hard links are not supported.
+- Completed files are left in their original location to allow you to seed. When files are imported to your assigned library folder Radarr will attempt to hardlinkthe file or fall back to copy (use double space) if hard links are not supported.
 - If the "Completed Download Handling - Remove" option is enabled in settings, Radarr will ask the torrent client to delete the original file and torrent, but this will only occur if the client reports that seeding is complete, the torrent is in the same category (i.e. not using a post-import category), the seed goal reached is supported by Radarr, and torrent is paused (stopped).
 
 ### Failed Download Handling
@@ -820,13 +819,13 @@ Most of the lists settings are fairly self explanatory, some lists require you t
 
 ## List Options
 
-- (Advanced Option) List Update Interval - How often should Radarr poll the list for updates?  [This is a minimum of 6 hours.](/radarr/faq#why-are-lists-sync-times-so-long-and-can-i-change-it)
+- (Advanced Option) List Update Interval - How often should Radarr poll the list for updates? This is provider dependent as per the UI.
 - (Advanced Option) Clean Library Level - Movies in library will be removed or unmonitored if not in your list(s)
   - Disabled - Do not clean the library (Recommended)
   - Log Only - Only log the movies are not on the list(s) and take no other actions
   - Keep and Unmonitor Movie - Keep movies that are not on the list(s), but unmonitor them in Radarr.
   - Remove Movie and Keep Files - Remove movies that are not on the list(s) from Radarr, but do not delete their files
-  - Remove Movie and Delete Files - Remove movies that are not on the list(s) from Radarr and delete their files
+  - **DANGER** Remove Movie and Delete Files - Remove movies that are not on the list(s) from Radarr and delete their files
 
 ## List Exclusions
 

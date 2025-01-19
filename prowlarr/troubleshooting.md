@@ -2,7 +2,7 @@
 title: Prowlarr Troubleshooting
 description: 
 published: true
-date: 2023-08-20T00:20:04.841Z
+date: 2024-01-20T01:59:15.987Z
 tags: prowlarr, troubleshooting
 editor: markdown
 dateCreated: 2021-06-20T20:05:25.223Z
@@ -28,13 +28,13 @@ dateCreated: 2021-06-20T20:05:25.223Z
     - [Manually upgrading](#manually-upgrading)
 - [NGINX errors](#nginx-errors)
 - [Indexer, Application, and Download Client Issues](#indexer-application-and-download-client-issues)
-  - [Cannot determine the frame size or a corrupted frame was received](##cannot-determine-the-frame-size-or-a-corrupted-frame-was-received)
+  - [Cannot determine the frame size or a corrupted frame was received](#cannot-determine-the-frame-size-or-a-corrupted-frame-was-received)
   - [Connection Timed Out](#connection-timed-out)
   - [Sonarr HTTP 404 Errors](#sonarr-http-404-errors)
   - [\*Arr HTTP 400 Errors](#arr-http-400-errors)
   - [503 HTTP Service Unavailable](#503-http-service-unavailable)
   - [Invalid Torrents](#invalid-torrents)
-  - [Searching & Indexers](#searches-indexers-and-trackers)
+  - [Searches Indexers and Trackers](#searches-indexers-and-trackers)
 
 # Asking for Help
 
@@ -74,6 +74,7 @@ To provide good and useful logs for sharing:
 6. Use [Gist](https://gist.github.com/), [0bin (**Be sure to disable colorization**)](https://0bin.net/), [PrivateBin](https://privatebin.net/), [Notifiarr PrivateBin](http://logs.notifiarr.com/), [Hastebin](https://hastebin.com/), [Ubuntu's Pastebin](https://pastebin.ubuntu.com/), or similar sites - excluding those noted to avoid below - to share the copied logs from above
 
 **Warnings:**
+
 - **Do not use [pastebin.com](https://pastebin.com) as their filters have a tendency to block the logs.
 - Do not use [pastebin.pl](https://pastebin.pl) as their site is frequently not accessible.
 - Do not use [JustPasteIt](https://justpaste.it/) as their site does not facilitate reviewing logs.
@@ -83,6 +84,7 @@ To provide good and useful logs for sharing:
 - Do not share console output, docker container output, or anything other than the application logs specified
 
 **Important Note:**
+
 - When using [0bin](https://0bin.net/), be sure to disable colorization and do not burn after reading.
 
 - Alternatively If you're looking for a specific entry in an old log file but aren't sure which one you can use N++. You can use the Notepad++ "Find in Files" function to search old log files as needed.
@@ -172,7 +174,7 @@ While Processing: "ALTER TABLE "QualityProfiles" ADD COLUMN "Items" TEXT"
 
 ## Resolving the issue
 
-In the event of a migration issue there is not much you can do immediately, if the issue is specific to you (or there are not yet any posts), please create a post on [our subreddit](https://reddit.com/r/prowlarr) or swing by our [discord](https://prowlarr.com/discord). If there are others with the same issue, then rest assured we are working on it.
+In the event of a migration issue there is not much you can do immediately, if the issue is specific to you (or there are not yet any pinned github issues), please swing by our [discord](https://prowlarr.com/discord). If there are others with the same issue, then rest assured we are working on it.
 
 > Please ensure you did not try to use a database from `nightly` on the stable version. Branch hopping is ill-advised.{.is-info}
 
@@ -235,7 +237,8 @@ This is typically caused by:
 
 - This is typically due to running an end of life (EOL) version of Sonarr which does not have the v3 API endpoints
 - Prowlarr does not support Sonarr v2
-- Prowlarr only supports Sonarr v3
+- Prowlarr only supports Sonarr v3 and v4
+  - Note that Sonarr v3 is end of life and support may be dropped at any time.
 
 ## \*Arr HTTP 400 Errors
 
@@ -253,6 +256,9 @@ This is typically caused by:
 - If the issue is Prowlarr caused then please file a bug report.
 
 ## Searches Indexers and Trackers
+
+> Refer to the first FAQ question for the \*Arrs for how they work - searches are not automatically executed. For other troubleshooting, refer to the articles below.
+{.is-info}
 
 - [Lidarr Searching & Indexers](/lidarr/troubleshooting#searches-indexers-and-trackers)
 - [Radarr Searching & Indexers](/radarr/troubleshooting#searches-indexers-and-trackers)

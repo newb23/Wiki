@@ -61,6 +61,7 @@ dateCreated: 2021-05-25T02:28:35.194Z
         - [Solutions](#solutions)
     - [Movie Folders](#movie-folders)
       - [Missing Root Folder](#missing-root-folder)
+      - [Movie Path Mount is Read Only](#movie-path-mount-is-read-only)
     - [Movies](#movies)
       - [Movie was removed from TMDb](#movie-was-removed-from-tmdb)
       - [Lists are unavailable due to failures](#lists-are-unavailable-due-to-failures)
@@ -331,7 +332,7 @@ Note: you will also need to add the websocket directive to your radarr configura
   - Radarr: /mnt/user/data:/data
 
 - Now within the download client you can specify where in /data you'd like to place your downloads, now this varies depending on the client but you should be able to tell it "Yeah download client place my files into." /data/torrents (or usenet)/movies and since you used /data in Radarr when the download client tells Radarr it's done Radarr will come along and say "Sweet, I have a /data and I also can see /torrents (or usenet)/movies all is right in the world."
-- There are many great write ups: our wiki [Docker Guide](/docker-guide) and TRaSH's [Hardlinks and Instant Moves (Atomic-Moves)](https://trash-guides.info/hardlinks/). Now these guides place heavy emphasis on Hardlinks and Atomic moves, but the general concept of containers and how path mapping works is the core of these discussions.
+- There are many great write ups: our wiki [Docker Guide](/docker-guide) and TRaSH's [Hard links and Instant Moves (Atomic-Moves)](https://trash-guides.info/hardlinks/). Now these guides place heavy emphasis on Hard links and Atomic moves, but the general concept of containers and how path mapping works is the core of these discussions.
 
 - See [TRaSH's Remote Path Guide](https://trash-guides.info/Radarr/Radarr-remote-path-mapping/) for more information.
 
@@ -349,7 +350,7 @@ Note: you will also need to add the websocket directive to your radarr configura
 - Configured Root Folders (aka Library folders) can be found in [Settings => Media Management => Root Folders](/radarr/settings/#root-folders)
 - One example is if your downloads are going into `\data\downloads` then you have a root folder set as `\data\downloads`.
 - It is suggested to use paths like `\data\media\` for your root folder/library and `\data\downloads\` for your downloads.
-- Review our [Docker Guide](/docker-guide) and TRaSH's [Hardlinks and Instant Moves (Atomic-Moves) Guide](https://trash-guides.info/hardlinks/) for more information on the correct and optimal path setup. Note that the concepts apply for docker and non-docker
+- Review our [Docker Guide](/docker-guide) and TRaSH's [Hard links and Instant Moves (Atomic-Moves) Guide](https://trash-guides.info/hardlinks/) for more information on the correct and optimal path setup. Note that the concepts apply for docker and non-docker
 
 > Your download folder where your download client places the downloads and your root/library folder MUST be separate. \*Arr will import the file(s) from your download client's folder into your library. The download client should not move anything or download anything to your library.
 {.is-warning}
@@ -466,6 +467,12 @@ Note: you will also need to add the websocket directive to your radarr configura
 1. Create a custom filter in Collections with the old root folder path
 1. Select the collections  and from the Root Paths drop down select the new root path that you want these collections' future movies to be assigned to.
 1. Run the Check Health Task in System => Tasks
+
+#### Movie Path Mount is Read Only
+
+{#movie-mount-ro}
+
+A mount containing a movie path is read only and is not writable by the user Radarr is running as.
 
 ### Movies
 

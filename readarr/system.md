@@ -2,7 +2,7 @@
 title: Readarr System
 description: 
 published: true
-date: 2023-10-12T15:55:28.302Z
+date: 2024-08-23T18:25:35.762Z
 tags: readarr, needs-love, system
 editor: markdown
 dateCreated: 2021-06-20T19:54:43.262Z
@@ -14,6 +14,7 @@ dateCreated: 2021-06-20T19:54:43.262Z
 - [Status](#status)
   - [Health](#health)
     - [System Warnings](#system-warnings)
+      - [Servarr - Metadata Issues Message](#servarr---metadata-issues-message)
       - [Branch is not a valid release branch](#branch-is-not-a-valid-release-branch)
       - [Currently installed SQLite version is not supported](#currently-installed-sqlite-version-is-not-supported)
       - [New update is available](#new-update-is-available)
@@ -72,6 +73,12 @@ dateCreated: 2021-06-20T19:54:43.262Z
 - This page contains a list of health checks errors. These health checks are periodically performed performed by Readarr and on certain events. The resulting warnings and errors are listed here to give advice on how to resolve them.
 
 ### System Warnings
+
+#### Servarr - Metadata Issues Message
+
+{#we-are-currently-experiencing-issues-with-our-metadata-provider-this-will-prevent-user-searches-and-author-refreshes-from-working-we-are-working-to-solve-the-issue}
+
+- Please see [Readarr Metadata Issue](/readarr/metadata-issues)
 
 #### Branch is not a valid release branch
 
@@ -202,7 +209,7 @@ Note: you will also need to add the websocket directive to your readarr configur
   - Readarr: /mnt/user/data:/data
 
 - Now within the download client you can specify where in /data you'd like to place your downloads, now this varies depending on the client but you should be able to tell it "Yeah download client place my files into." /data/torrents (or usenet)/books and since you used /data in Readarr when the download client tells Readarr it's done Readarr will come along and say "Sweet, I have a /data and I also can see /torrents (or usenet)/books all is right in the world."
-- There are many great write ups: our wiki [Docker Guide](/docker-guide) and TRaSH's [Hardlinks and Instant Moves (Atomic-Moves)](https://trash-guides.info/hardlinks/). Now these guides place heavy emphasis on Hardlinks and Atomic moves, but the general concept of containers and how path mapping works is the core of these discussions.
+- There are many great write ups: our wiki [Docker Guide](/docker-guide) and TRaSH's [Hard links and Instant Moves (Atomic-Moves)](https://trash-guides.info/hardlinks/). Now these guides place heavy emphasis on Hard links and Atomic moves, but the general concept of containers and how path mapping works is the core of these discussions.
 
 - If you're crossing operating systems or native and docker then you need a remote path map. See [TRaSH's Remote Path Guide for Radarr but the concept is the same for all \*Arrs](https://trash-guides.info/Radarr/Radarr-remote-path-mapping/) for more information.
 
@@ -218,7 +225,7 @@ Note: you will also need to add the websocket directive to your readarr configur
 - Configured Root Folders (aka Library folders) can be found in [Settings => Media Management => Root Folders](/readarr/settings/#root-folders)
 - One example is if your downloads are going into `\data\downloads` then you have a root folder set as `\data\downloads`.
 - It is suggested to use paths like `\data\media\` for your root folder/library and `\data\downloads\` for your downloads.
-- Review our [Docker Guide](/docker-guide) and TRaSH's [Hardlinks and Instant Moves (Atomic-Moves) Guide](https://trash-guides.info/hardlinks/) for more information on the correct and optimal path setup. Note that the concepts apply for docker and non-docker
+- Review our [Docker Guide](/docker-guide) and TRaSH's [Hard links and Instant Moves (Atomic-Moves) Guide](https://trash-guides.info/hardlinks/) for more information on the correct and optimal path setup. Note that the concepts apply for docker and non-docker
 
 > Your download folder where your download client places the downloads and your root/library folder MUST be separate. \*Arr will import the file(s) from your download client's folder into your library. The download client should not move anything or download anything to your library.
 {.is-warning}

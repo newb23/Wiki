@@ -2,96 +2,15 @@
 title: Sonarr FAQ
 description: 
 published: true
-date: 2023-10-13T11:44:29.977Z
+date: 2024-12-14T18:36:04.530Z
 tags: 
 editor: markdown
 dateCreated: 2021-06-09T18:39:33.208Z
 ---
 
-<!-- # Table of Contents
+> For Sonarr v4 specific FAQ entries - Please see the v4 FAQ [here](/sonarr/faq-v4)
+{.is-info}
 
-- [Table of Contents](#table-of-contents)
-- [Sonarr Basics](#sonarr-basics)
-  - [How does Sonarr find episodes?](#how-does-sonarr-find-episodes)
-  - [How are possible downloads compared?](#how-are-possible-downloads-compared)
-  - [Preferred Words FAQs](#preferred-words-faqs)
-  - [How do I change from the Windows Service to a Tray App?](#how-do-i-change-from-the-windows-service-to-a-tray-app)
-  - [How do I Backup/Restore my Sonarr?](#how-do-i-backuprestore-my-sonarr)
-    - [Backing up Sonarr](#backing-up-sonarr)
-      - [Using built-in backup](#using-built-in-backup)
-      - [Using file system directly](#using-file-system-directly)
-    - [Restoring from Backup](#restoring-from-backup)
-      - [Using zip backup](#using-zip-backup)
-      - [Using file system backup](#using-file-system-backup)
-      - [File System Restore on Synology NAS](#file-system-restore-on-synology-nas)
-  - [Help I have locked myself out](#help-i-have-locked-myself-out)
-  - [Why are there two files? \| Why is there a file left in downloads?](#why-are-there-two-files-why-is-there-a-file-left-in-downloads)
-  - [I see that feature/bug X was fixed, Why can I not see it?](#i-see-that-featurebug-x-was-fixed-why-can-i-not-see-it)
-  - [Episode Progress - How is it calculated?](#episode-progress-how-is-it-calculated)
-  - [How do I access Sonarr from another computer?](#how-do-i-access-sonarr-from-another-computer)
-  - [Why does Sonarr refresh series information so frequently?](#why-does-sonarr-refresh-series-information-so-frequently)
-  - [Why is there a number next to Activity?](#why-is-there-a-number-next-to-activity)
-  - [What's the different Series Types?](#whats-the-different-series-types)
-    - [Series Types](#series-types)
-    - [Series Type Examples](#series-type-examples)
-      - [Daily](#daily)
-      - [Standard](#standard)
-      - [Anime](#anime)
-  - [How can I rename my series folders?](#how-can-i-rename-my-series-folders)
-  - [How do I update Sonarr?](#how-do-i-update-sonarr)
-    - [Installing a newer version](#installing-a-newer-version)
-      - [Native](#native)
-      - [Docker](#docker)
-  - [Can I switch from `develop` back to `main`?](#can-i-switch-from-develop-back-to-main)
-  - [Can I switch between branches?](#can-i-switch-between-branches)
-- [Sonarr and Series Issues + Metadata](#sonarr-and-series-issues-metadata)
-  - [How does Sonarr handle scene numbering issues (American Dad!, etc)?](#how-does-sonarr-handle-scene-numbering-issues-american-dad-etc)
-    - [How Sonarr handles scene numbering issues](#how-sonarr-handles-scene-numbering-issues)
-    - [Problematic Shows](#problematic-shows)
-  - [Why can't Sonarr import episode files for series X? / Why can't Sonarr find releases for series X?](#why-cant-sonarr-import-episode-files-for-series-x-why-cant-sonarr-find-releases-for-series-x)
-  - [TVDb is updated why isn't Sonarr?](#tvdb-is-updated-why-isnt-sonarr)
-  - [Why can I not add a series?](#why-can-i-not-add-a-series)
-  - [Why can I not add a series when I know the TVDb ID?](#why-can-i-not-add-a-series-when-i-know-the-tvdb-id)
-  - [Title Slug in Use](#title-slug-in-use)
-  - [Episode does not have an absolute number](#episode-does-not-have-an-absolute-number)
-  - [Episode Air Times](#episode-air-times)
-- [Sonarr Common Problems](#sonarr-common-problems)
-  - [Path is Already Configured for an Existing Series](#path-is-already-configured-for-an-existing-series)
-  - [Episode does not have an forever](#system-logs-loads-forever)
-  - [Weird UI Issues](#weird-ui-issues)
-  - [Web Interface Only Loads at localhost on Windows](#web-interface-only-loads-at-localhost-on-windows)
-  - [uTorrent is no longer working](#utorrent-is-no-longer-working)
-  - [Does Sonarr require a SABnzbd post-processing script to import downloaded episodes?](#does-sonarr-require-a-sabnzbd-post-processing-script-to-import-downloaded-episodes)
-  - [I got a pop-up that said config.xml was corrupt, what now?](#i-got-a-pop-up-that-said-configxml-was-corrupt-what-now)
-  - [Sonarr on Synology Stopped Working (SSL)](#sonarr-on-synology-stopped-working-ssl)
-  - [Invalid Certificate and other HTTPS or SSL issues](#invalid-certificate-and-other-https-or-ssl-issues)
-  - [How do I stop the browser from launching on startup?](#how-do-i-stop-the-browser-from-launching-on-startup)
-  - [VPNs, Jackett, and the \*ARRs](#vpns-jackett-and-the-arrs)
-  - [I see log messages for shows I do not have/do not want](#i-see-log-messages-for-shows-i-do-not-havedo-not-want)
-  - [Seeding torrents aren't deleted automatically](#seeding-torrents-arent-deleted-automatically)
-  - [Help, my Mac says Sonarr cannot be opened because the developer cannot be verified](#help-my-mac-says-sonarr-cannot-be-opened-because-the-developer-cannot-be-verified)
-  - [Help, my Mac says Sonarr.app is damaged and cannot be opened](#help-my-mac-says-sonarrapp-is-damaged-and-cannot-be-opened)
-  - [I am getting an error: Database disk image is malformed](#i-am-getting-an-error-database-disk-image-is-malformed)
-  - [I use Sonarr on a Mac and it suddenly stopped working. What happened?](#i-use-sonarr-on-a-mac-and-it-suddenly-stopped-working-what-happened)
-  - [Why can Sonarr not see my files on a remote server?](#why-can-sonarr-not-see-my-files-on-a-remote-server)
-    - [Sonarr runs under the LocalService account by default which doesn't have access to protected remote file shares](#sonarr-runs-under-the-localservice-account-by-default-which-doesnt-have-access-to-protected-remote-file-shares)
-    - [You're using a mapped network drive (not a UNC path)](#youre-using-a-mapped-network-drive-not-a-unc-path)
-  - [Mapped Network Drives vs UNC Paths](#mapped-network-drives-vs-unc-paths)
-  - [Sonarr will not work on Big Sur](#sonarr-will-not-work-on-big-sur)
-  - [My Custom Script stopped working after upgrading from v2](#my-custom-script-stopped-working-after-upgrading-from-v2)
-- [Sonarr Searching & Downloading Common Problems](#sonarr-searching-downloading-common-problems)
-  - [Query Successful - No Results Returned](#query-successful-no-results-returned)
-  - [Why didn't Sonarr grab an episode I was expecting?](#why-didnt-sonarr-grab-an-episode-i-was-expecting)
-  - [Found matching series via grab history, but release was matched to series by ID. Automatic import is not possible](#found-matching-series-via-grab-history-but-release-was-matched-to-series-by-id-automatic-import-is-not-possible)
-  - [Why wont Sonarr import a TBA episode?](#why-wont-sonarr-import-a-tba-episode)
-  - [Sonarr says Unknown Series on Searches or Imports](#sonarr-says-unknown-series-on-searches-or-imports)
-  - [Jackett's /all Endpoint](#jacketts-all-endpoint)
-    - [Jackett /All Solutions](#jackett-all-solutions)
-  - [Jackett shows more results than Sonarr when manually searching](#jackett-shows-more-results-than-sonarr-when-manually-searching)
-  - [Finding Cookies](#finding-cookies)
-  - [Unpack Torrents](#unpack-torrents)
-  - [Permissions](#permissions)
--->
 # Sonarr Basics
 
 ## How does Sonarr find episodes?
@@ -110,21 +29,21 @@ Active searching (via the indexer's API) is only done in the below situations. N
   - User or API triggered search. Typically executed by clicking the Automatic or Manual Search buttons on a specific episode, season, or series.
 - Adding a show using the Add and Search button
 - Using Wanted => Missing or Wanted => Cutoff Unmet to do one or more searches
-- Recently Aired Episodes added after airing
-  - If a new episode is added to Sonarr that aired in the last 14 days or within 1 day into the future (to cover those episodes that may release a bit early) Sonarr **will search** for those episodes after the series folder is rescanned (to catch things imported outside of Sonarr)
+- Recent Episodes
+  - **New episodes** from TVDb in Skyhook that aired in the last 14 days or within 1 day into the future (to cover those episodes that may release a bit early) will be automatically searched for those episodes after the series folder is rescanned (to catch things imported outside of Sonarr)
+  - **Absolute Numbering** Episodes with absolute numbers added to TVDb in Skyhook that aired in the last 14 days or within 1 day into thr future
 
 ## How are possible downloads compared?
 
 > Generally Quality Trumps All. If you wish to have Quality not be the main priority - you can merge your qualities together. [See TRaSH's Guide](https://trash-guides.info/merge-quality)
 {.is-info}
 
-- The current logic [can always be found here](https://github.com/Sonarr/Sonarr/blob/develop/src/NzbDrone.Core/DecisionEngine/DownloadDecisionComparer.cs#L31-L40s).
+- The current logic [can always be found here](https://github.com/Sonarr/Sonarr/blob/develop/src/NzbDrone.Core/DecisionEngine/DownloadDecisionComparer.cs#L31-L41s).
 
-- As of 2022-01-23 the logic is as follows:
+- As of 2024-01-16 the logic is as follows:
 
 1. Quality
-1. Language
-1. Preferred Word Score\*
+1. Custom Format Score
 1. Protocol (as configured in the relevant Delay Profile)
 1. Episode Count\*
 1. Episode Number
@@ -133,31 +52,11 @@ Active searching (via the indexer's API) is only done in the below situations. N
 1. Age (If Usenet)
 1. Size
 
-> REPACKS and PROPERs are v2 of Qualities and thus rank above a non-repack of the same quality. [Set Media Management => File Management `Download Proper & Repacks` to "Do Not Prefer"](/sonarr/settings#file-management) and use a preferred word regex of `/\b(repack|proper)\b/i` with a positive score as suggested by [TRaSH's Guides](https://trash-guides.info/Sonarr/Sonarr-Release-Profile-RegEx/#p2p-groups-repackproper)
+> REPACKS and PROPERs are v2 of Qualities and thus rank above a non-repack of the same quality. [Set Media Management => File Management `Download Proper & Repacks` to "Do Not Prefer"](/sonarr/settings#file-management) and use [TRaSH's Repack/Proper Custom Format](https://trash-guides.info/Sonarr/sonarr-collection-of-custom-formats/#repackproper) with a positive score as suggested by [TRaSH's Guides](https://trash-guides.info/Sonarr/sonarr-setup-quality-profiles/)
 {.is-warning}
 
-> \* Preferred Words always upgrade a release even if the quality and/or language cutoff has been met. This includes if the Profile has Upgrades disabled.
-> \* Preferred Words override the standard Season Pack Preference. This is [Sonarr Github Issue #3562](https://github.com/Sonarr/Sonarr/issues/3562). To prefer Season Packs when using preferred words, you need to [add a season pack preference as well](https://trash-guides.info/Sonarr/Sonarr-Release-Profile-RegEx/#optional-prefer-season-packs)
+> \* Use Custom Formats and TRaSH Guide's [season pack custom format](https://trash-guides.info/Sonarr/sonarr-collection-of-custom-formats/#season-pack) with a score greater than zero to prefer season packs.
 {.is-info}
-
-## Preferred Words FAQs
-
-- For the score of the on disk file: The existing name of the file and the "original scene name" of the release are evaluated for preferred words. The higher score of the two is taken.
-
-- How are preferred words included in renaming?
-
-  - For Sonarr you can make use of the `{Preferred Words}` token in your renaming scheme and also enable`Include Preferred when Renaming` in the release profile. take a look [at TRaSH's recommended naming scheme](https://trash-guides.info/Sonarr/Sonarr-recommended-naming-scheme/) for a recommended naming scheme examples for Sonarr. Using the tokens in your renaming scheme could help with download loop issues.
-
-- As of v3.0.7, you can now also include Preferred Words on a Release Profile basis `{Preferred Words:<Release Profile Name>}`
-
-- Preferred Words always upgrade a release even if the quality and/or language cutoff has been met. This includes if the Profile has `Upgrades` disabled
-
-> Preferred Words override the standard Season Pack Preference. This is [Sonarr Github Issue #3562](https://github.com/Sonarr/Sonarr/issues/3562). To prefer Season Packs when using preferred words, you need to [add a season pack preference as well](https://trash-guides.info/Sonarr/Sonarr-Release-Profile-RegEx/#optional-prefer-season-packs)
-{.is-info}
-
-- Tags can be used to control what Series a Release Profile applies to; refer to the settings entry for Release Profiles for more information
-
-- For additional information on Preferred Words and Release Profiles [see the settings page](/sonarr/settings#release-profiles)
 
 ## How do I change from the Windows Service to a Tray App?
 
@@ -246,7 +145,7 @@ chmod -R 0644 *
 
 {#help-i-have-forgotten-my-password}
 
-> If you are using v4 of Sonarr the `AuthenticationMethod` type `None` is no longer valid - please see this [FAQ](/sonarr/faq-v4) {.is-info}
+> Authentication is now mandatory in v4 of Sonarr and the `AuthenticationMethod` type `None` is no longer valid - please see this [v4 FAQ - Forced Authentication](/sonarr/faq-v4#forced-authentication) {.is-info}
 
 To disable authentication (to reset your forgotten username or password) you will need need to edit `config.xml` which will be inside the [Sonarr Appdata Directory](/sonarr/appdata-directory)
 
@@ -254,9 +153,9 @@ To disable authentication (to reset your forgotten username or password) you wil
 1. Open config.xml in a text editor
 1. Find the authentication method line will be
 `<AuthenticationMethod>Basic</AuthenticationMethod>` or `<AuthenticationMethod>Forms</AuthenticationMethod>`
-*(Make sure you only have one AuthenticationMethod entry in your file)*
-1. Change the `AuthenticationMethod` line to `<AuthenticationMethod>None</AuthenticationMethod>`
-*(If you are running v4, the correct entry is External instead of None)*
+***(Be sure that you do not have two AuthenticationMethod entries in your file)***
+1. Change the `AuthenticationMethod` line to `<AuthenticationMethod>External</AuthenticationMethod>`
+***(If you are running an old v3 version, the correct value is `None` instead of `External`)***
 1. Restart Sonarr
 1. Sonarr will now be accessible without a password, you should go the `Settings: General` in the UI and set your username and password
 
@@ -266,10 +165,10 @@ This is expected. With a setup that supports [hardlinks](https://trash-guides.in
 
 1. Sonarr will send a download request to your client, and associate it with a label or category name that you have configured in the download client settings. Examples: movies, tv, series, music, etc.
 1. Sonarr will monitor your download clients active downloads that use that category name. This monitoring occurs via your download client's API.
-1. Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within under the specific download client). When files are imported to your media folder will hardlink the file if supported by your setup or copy if not hardlinks are not supported.
+1. Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within under the specific download client). When files are imported to your media folder will hardlinkthe file if supported by your setup or copy if not hard links are not supported.
 1. If the "Completed Download Handling - Remove Completed" option is enabled in Sonarr's settings, Sonarr will delete the original file and torrent from your download client, but only if the download client reports that seeding is complete and torrent is stopped (i.e. paused). See [TRaSH's Download Client Guides](https://trash-guides.info/Downloaders/) for how to configure your download client optimally.
 
-> Hardlinks are enabled by default. [A hardlink will not use any additional disk space](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/). The file system and mounts must be the same for your completed download directory and your media library. If the hardlink creation fails or your setup does not support hardlinks then it will fall back and copy the file.{.is-info}
+> Hard links are enabled by default. [A hard link will not use any additional disk space](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/). The file system and mounts must be the same for your completed download directory and your media library. If the hard link creation fails or your setup does not support hard links then it will fall back and copy the file.{.is-info}
 
 ## I see that feature/bug X was fixed, Why can I not see it?
 
@@ -296,6 +195,12 @@ Sonarr consists of two main branches of code, `main` and `develop`.
 - Sonarr refreshes series and episode information in addition to rescanning the disk for files every 12 hours. This might seem aggressive, but is a very important process. The data refresh from our TVDb proxy is important, because new episode information is synced down, air dates, number of episodes, status (continuing/ended). Even shows that aren't airing are being updated with new information.
 - The disk scan is less important, but is used to check for new files that weren't sorted by Sonarr and detect deleted files.
 - The most time consuming portion is the information refresh (assuming reasonable disk access speed), larger shows take longer due to the number of episodes to process.
+- No you cannot disable the task nor should you through any SQL hackery. The refresh series task queries the upstream Skyhook proxy and checks to see if the metadata for each series (ids, episodes, summaries, etc.) has updated compared to what is currently in Sonarr. If necessary, it will then update the applicable movies.
+- A common complaint is the Refresh task causes heavy I/O usage.
+- The main setting is "Rescan Series Folder after Refresh". If your disk I/O usage spikes during a Refresh then you may want to change the Rescan setting to `Manual`.
+  - Do not change this to `Never` unless all changes to your library (new movies, upgrades, deletions etc) are done through Sonarr.
+  - If you delete movie files manually or via Plex or another third party program, do not set this to `Never`.
+- The other setting that can be changed is "Analyze video files" which is advised to be enabled if you use tdarr or otherwise externally modify your files. If you do not you can safely disable "Analyze video files" to reduce some I/O.
 
 > It is not possible to disable this task. If this task is running for long enough that you feel it's the problem, something else is going on that needs to be solved instead of stopping this task.
 {.is-warning}
@@ -359,13 +264,14 @@ Logs will show `Searching indexers for [The Witcher : S01E09 (09)]`
 
 > The same process applies for moving/changing Series paths as well{.is-info}
 
-If you have adjusted your your Series Name format after Sonarr has already created some Series folders, Sonarr will not automatically rename existing folders. In order to trigger a rename of these folders the following steps should be taken:
+If you have adjusted your Series Name format after Sonarr has already created some Series folders, Sonarr will not automatically rename existing folders. In order to trigger a rename of these folders the following steps should be taken:
 
 1. Series
-1. Mass Editor
+1. Click on "Select Series"
 1. Select what series need their folder renamed
+1. Click on "Edit"
 1. Change Root Folder to the same Root Folder that the series currently exist in
-1. Select "Yes move files" to have
+1. Select "Yes, move the files"
 
 > If you are using Plex or Emby, this will trigger re-detection of intros, thumbnails, chapters, and preview metadata.
 {.is-warning}
@@ -379,15 +285,10 @@ If you have adjusted your your Series Name format after Sonarr has already creat
 
 *This will not install the bits from that branch immediately, it will happen during the next update.*
 
-- main - ![Current Master/Stable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Main&query=%24%5B%27v3-stable%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) - (Default/Stable): This has been tested by users on nightly (`develop`) branch and it's not known to have any major issues. This branch should be used by the majority of users. On GitHub, this is the `main` branch.
-- develop - ![Current Develop/Nightly](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Develop&query=%24%5B%27v3-nightly%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) -  (Alpha/Unstable) : This is now the same as main for non-Docker users and likely the last v3 release.
+- main - ![Current v4 Main/Latest](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Main&query=%24%5B%27v4-stable%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) - (Default/Stable): This has been tested by users on nightly (`develop`) branch and it's not known to have any major issues. This branch should be used by the majority of users. On GitHub, this is the `main` branch.
+- develop - ![Current v4 Develop/Nightly](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Develop&query=%24%5B%27v4-nightly%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) -  (Beta/Unstable) : This is the bleeding edge. It is released as soon as code is committed and passes all automated tests. This build may have not been used by us or other users yet. There is no guarantee that it will even run in some cases. This branch is only recommended for advanced users. Issues and self investigation are expected in this branch. **Use this branch only if you know what you are doing and are willing to get your hands dirty to recover a failed update.** This version is updated immediately.
 
-> ~~**Warning: You may not be able to go back to `main` after switching to this branch.** On GitHub, this is the `develop` branch.~~
-{.is-danger}
-
-- v4 develop - ![Current v4 Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=v4-preview&query=%24%5B%27v4-preview%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) -  (Alpha/Unstable) : **For Non-Docker users the branch is `develop` once v4 is installed. For Docker users this is likely the `develop` tag** This is the bleeding edge for Sonarr v4 Beta. It is released as soon as code is committed and passes all automated tests. This build may have not been used by us or other users yet. There is no guarantee that it will even run in some cases. This branch is only recommended for advanced users. Issues and self investigation are expected in this branch. On GitHub, this is the `develop` branch.
-
-> **Warning: You are not able to go back to (v3) `main` or (v3) `develop` after switching to the v4 branch without reinstalling and locating a v3 backup.** On GitHub, this is the `develop` branch.
+> **Warning: You may not be able to go back to `main` after switching to this branch.** On GitHub, this is the `develop` branch.
 {.is-danger}
 
 > v3 **non-docker** installs **cannot** be upgraded directly to v4 and require installing Sonarr v4
@@ -395,10 +296,10 @@ If you have adjusted your your Series Name format after Sonarr has already creat
 
 - Note: If your install is through Docker append `:release`, `:latest`, `:nightly`, or `:develop` to the end of your container tag depending on who makes your builds.
 
-|                                                                    | `main` (stable) ![Current Main/Latest](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Main&query=%24%5B%27v3-stable%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) | `develop` (v3) (beta) ![Current v3 Develop/Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Develop&query=%24%5B%27v3-nightly%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) | `develop` (v4) (v4 beta) ![Current v4 Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=v4-preview&query=%24%5B%27v4-preview%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) |
-|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [hotio](https://hotio.dev/containers/sonarr)                       | `release`                                                                                                                                                                                             | `nightly`                                                                                                                                                                                                   | `v4`                                                                                                                                                                                                            |
-| [LinuxServer.io](https://docs.linuxserver.io/images/docker-sonarr) | `latest`                                                                                                                                                                                              | `3.0.10`                                                                                                                                                                                                     | `develop`                                                                                                                                                                                                       |
+|                                                                    | `main` (v4 stable) ![Current v4 Main/Latest](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Main&query=%24%5B%27v4-stable%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) | `develop` (v4 beta) ![Current v4 Develop/Nightly](https://img.shields.io/badge/dynamic/json?color=f5f5f5&label=Develop&query=%24%5B%27v4-nightly%27%5D.version&url=https%3A%2F%2Fservices.sonarr.tv%2Fv1%2Freleases) |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [hotio](https://hotio.dev/containers/sonarr)                       | `release`                                                                                                                                                                                                   | `nightly`                                                                                                                                                                                                            |
+| [LinuxServer.io](https://docs.linuxserver.io/images/docker-sonarr) | `latest`                                                                                                                                                                                                    | `develop`                                                                                                                                                                                                            |
 
 ### Installing a newer version
 
@@ -430,10 +331,6 @@ If you have adjusted your your Series Name format after Sonarr has already creat
     - `The DataMapper was unable to load the following field: 'Languages' value`
     - `ID does not match a known language Parameter name: id`
     - Other similar database errors around missing columns or tables.
-- **August 7 2022 Update**
-  - `3.0.9.1549` has been released as main/stable
-  - For those on develop and are still on `3.0.9.1549` or lower you can safely downgrade to main
-  - If you are on a newer version you *may be stuck* on nightly/develop until a new stable release is cut. If you have a backup from prior to upgrading past the version noted above, you can reinstall and restore the backup. Check with the development team to see if you can safely downgrade.
 
 # Sonarr and Series Issues + Metadata
 
@@ -495,53 +392,30 @@ Some examples of other shows that commonly have issues, most of which may be res
 
 ## Why can't Sonarr import episode files for series X? / Why can't Sonarr find releases for series X?
 
-There can be multiple reasons why Sonarr is not able to find or import episodes for a particular series.
+There can be multiple reasons why Sonarr is not able to find or import episodes for a particular series, and there are two methods for "correcting" these failures.
 
-> Sonarr does not use aliases nor translations (i.e. any foreign language titles) from TVDb.
-{.is-warning}
-
-> **For indexers that support ID based searches**, the series TVDbID or IMDbID are used for searching. Series titles and any aliases are only used if ID based searches return no results.
-{.is-info}
-
-- Sonarr relies on being able to match titles, often the uploaders name episodes using different titles, e.g. `CSI: Crime Scene Investigation` is posted just `CSI` thus Sonarr cannot match the names without some help. These are handled by the Scene Mapping that the Sonarr Team maintains.
-- You may also wish to review the [FAQ Entry for Problematic Shows and Release Group vs. TVDb numbering issues](#how-does-sonarr-handle-scene-numbering-issues-american-dad-etc)
-
-> **For all Japanese Anime, aliases will need to be added to [thexem.info](https://thexem.info)**, for other series to request a new mapping see the steps below. Further information can be found with some of the XEM folks that hangout in the #XEM discord channel on the Sonarr Discord.
-{.is-danger}
-
-- [Services Requested Mappings *Review and ensure the alias and release have not already been requested or added*](https://docs.google.com/spreadsheet/ccc?key=0Atcf2VZ47O8tdGdQN1ZTbjFRanhFSTBlU0xhbzhuMGc#gid=0)
-- [Services Scene Mapping Request Form *Make a new request for an alias. Ensure the form is filled out in full*](https://docs.google.com/forms/d/15S6FKZf5dDXOThH4Gkp3QCNtS9Q-AmxIiOpEBJJxi-o/viewform)
-{.links-list}
-
-> Typically Services requests are added within 1-5 days
-{.is-info}
-
-> Again, do not request a mapping for Japanese Anime; use XEM for that.
-> Further information can be found with some of the XEM folks that hangout in the [\#XEM discord channel on the Sonarr Discord](https://discord.gg/Z3D6u5hBJb)
-{.is-danger}
-
-> If a Non-Japanese Series requires Season mapping (e.g. released as S25E26 but TVDB is S26E2 then an XEM mapping will be required. This cannot be done with Services mapping.
-{.is-info}
-
-> The series "Helt Perfekt" with TVDb ids of `343189` and `252077` is difficult to automate due to TVDb having the same name for both shows, violating TVDb's own rules. The first entry for the series gets the name. Any future entries for the series must have the year as part of the series name. However, a scene exception as been added to map releases (case sensitive mapping) Helt Perfekt releases containing `NORWEGIAN` -\> `252077` and containing `SWEDISH` -\> `343189`
-{.is-info}
+- Sonarr tries to search first using TVDBid or IMDBid, if your indexer supports those kinds of searches. If there are no results, or you have no indexers which support ID-based searches, Sonarr falls back to searching text-based titles.
+- Sonarr does not use aliases nor translations (i.e. any foreign language titles) from TVDb.
+- The text-based search must match exactly. This includes the year, if a year is required (listed on TVDB with a year after the series title).
+- The text-based search is *only* for the English translation of the series title from TVDB. Other languages are not searched.
+- The site <https://thexem.info> is used to correct scene/episode mappings, and also to add aliases to be searched for series or season names. Note that this is primarily for Anime only. Please check this site for corrections if you have a mismatch between season/episode results and the ones you expect. There is a #xem channel on Discord to talk about changes to the site. Xem is the *only* way to fix Japanese Anime aliases. Additonal information on XEM's usage can be found in the faq entry [How Sonarr Handles scenen numbering issues](#how-sonarr-handles-scene-numbering-issues)
+- The Scene Mapping Table is what is primarily to be used for series aliases for non-Anime series only. This table is manual. Please search first to be sure your request has not been made, and provide a release name example with your request. [This](https://docs.google.com/spreadsheet/ccc?key=0Atcf2VZ47O8tdGdQN1ZTbjFRanhFSTBlU0xhbzhuMGc#gid=0) is the current list of previous requests for your review. [This](https://docs.google.com/forms/d/15S6FKZf5dDXOThH4Gkp3QCNtS9Q-AmxIiOpEBJJxi-o/viewform) is the form for requesting new mappings. Requests to this table are added manually by devs, and can take up to 2 weeks to take effect. *Please remember that all aliases must be searched by all Sonarr users for every episode/season search, which can dramatically increase search times and API hits.*
+- We are aware that some series are just plain difficult. You may also wish to review the [FAQ Entry for Problematic Shows and Release Group vs. TVDb numbering issues](#how-does-sonarr-handle-scene-numbering-issues-american-dad-etc).
 
 ## TVDb is updated why isn't Sonarr?
 
 {#tvdb}
 
-- TVDb has a 24 hour cache on their API.
-- TVDb's API then needs to populate through their CDN cache which takes several hours.
+- TVDb has a 1-3 hour cache on their API.
+- TVDb's API then needs to populate through their CDN cache which takes up to an hour.
 - Sonarr's Skyhook has a much smaller few hour cache on top of that.
 - Additionally, Sonarr only runs the Refresh Series task every 12 hours. This task can be manually ran from System => Tasks; "Update All" from the Series Index, or manually ran for a specific series on that series's page.
-
-- Therefore for a change on TVDb to get into Sonarr automatically it will typically take between 36 and 48 hours (24 + ~3 + ~3 + 12)
-
-- If a series or episodes are missing on TVDb, they'll take 36 to 48 hours from when they're added to populate into your Sonarr instance.
+- Therefore for a change on TVDb to get into Sonarr automatically it will typically take between 3 and 19 hours (3 + 1 + 3 + 12)
+- Episode titles in English are the only titles synced. If there is no English translation, then the episode title will be TBA.
 
 {#missing-episodes}
 
-- If you know a TVDb update was made more than 48 hours ago, then please come discuss on our [Discord](https://discord.sonarr.tv/).
+- If you know a TVDb update was made more than 24 hours ago, and you have refreshed the series in Sonarr, then please come discuss on our [Discord](https://discord.sonarr.tv/).
 
 ## Why can I not add a series?
 
@@ -638,7 +512,7 @@ Depending on your OS, there are multiple possible ways.
 
 ## VPNs, Jackett, and the \*ARRs
 
-- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
+- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. If you're in a repressive country noted above it is likely your connection to your trackers needs to be VPN'd as well - in other words Jackett behind a VPN or Prowlarr using an Indexer Proxy. Other *Arr apps not connecting to trackers should not be behind a VPN.. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
 - In other words, putting the  \*Arrs (Lidarr, Prowlarr, Radarr, Readarr, and Lidarr) behind a VPN can and will make the applications unusable in some cases due to the services not being accessible.
 
 > **To be clear it is not a matter if VPNs will cause issues with the \*Arrs, but when: image providers will block you and cloudflare is in front of most of \*Arr servers (updates, metadata, etc.) and liable to block you too**
@@ -676,8 +550,7 @@ Depending on your OS, there are multiple possible ways.
 
 ## I am getting an error: Database disk image is malformed
 
-> You may receive this after upgrading sqlite3 to 3.41. Sonarr v3.0.9 does not support sqlite3 3.41 due to a breaking default change. [Details on the issue can be found in Sonarr GHI #5464](https://github.com/Sonarr/Sonarr/issues/5464)
-> This is resolved with Sonarr v3.0.10 and users should upgrade Sonarr accordingly.
+> Database corruption occurring when upgrading to v4 means your existing v3 database is corrupt. v4 does not create database corruption. Downgrading to v3 or staying on v3 does not and will never fix the underlying corruption. **Sonarr v3 is end of life and unsupported**
 {.is-warning}
 
 - **Errors of `Error creating log database` indicate issues with logs.db**
@@ -713,7 +586,6 @@ Depending on your OS, there are multiple possible ways.
 - Stop the Sonarr service.
 - Open the Properties \> Log On dialog.
 - Change the service user account to the target user account.
-- Run Sonarr.exe using the Startup Folder
 
 ### You're using a mapped network drive (not a UNC path)
 
@@ -761,7 +633,10 @@ First, make sure you read and understand the section above called ["How does Son
 
 - See [this troubleshooting entry](/sonarr/troubleshooting#found-matching-series-via-grab-history-but-series-was-matched-by-series-id-automatic-import-is-not-possible)
 
-- On TVDb, when episode names are unknown they'll be titled TBA and there is a 24 hour cache on the TVDb API. Typically, changes to the TVDb website take 24-48 hours to reach Sonarr due to TVDb cache (24 hours), skyhook cache (a few hours), and the series refresh interval (every 12 hours). The [Episode Title Required setting](/sonarr/settings#importing) in Sonarr controls import behavior when the title is TBA, but after 48 hours from series airing the release will be imported even if the title is still TBA. There is also no automatic follow up renaming of TBA titled files. Note that the TBA timer is calculated from the episode airdate and time, not from when you've grabbed it or the upload time.
+## TBA Episode Naming
+
+- On TVDb, when episode names are unknown they'll be titled TBA and there is a cache on the TVDb API. The [Episode Title Required setting](/sonarr/settings#importing) in Sonarr controls import behavior when the title is TBA, but after 48 hours from series airing the release will be imported even if the title is still TBA. There is also no automatic follow up renaming of TBA titled files. Note that the TBA timer is calculated from the episode airdate and time, not from when you've grabbed it or the upload time.
+- Details on TVDb and Skyhook's cache can be found in the FAQ [TVDb is updated why isn't Sonarr?](#tvdb-is-updated-why-isnt-sonarr)
 
 ## Sonarr says Unknown Series on Searches or Imports
 

@@ -2,7 +2,7 @@
 title: Prowlarr FAQ
 description: Prowlarr FAQ
 published: true
-date: 2023-10-30T02:08:59.497Z
+date: 2024-01-14T20:32:14.182Z
 tags: prowlarr, faq
 editor: markdown
 dateCreated: 2021-11-03T03:01:18.079Z
@@ -12,10 +12,12 @@ dateCreated: 2021-11-03T03:01:18.079Z
 
 - [Table of Contents](#table-of-contents)
   - [Forced Authentication](#forced-authentication)
+    - [Authentication Method](#authentication-method)
+    - [Authentication Required](#authentication-required)
   - [How do I reset Stats?](#how-do-i-reset-stats)
   - [Category Not Available or Missing](#category-not-available-or-missing)
-  - [Can I add any (generic) Torznab or Newznab indexer?](#can-i-add-any-generic-torznab-or-newznab-indexer)
   - [Can I add any (generic) Torrent RSS Feed?](#can-i-add-any-generic-torrent-rss-feed)
+  - [Can I add any (generic) Torznab or Newznab indexer?](#can-i-add-any-generic-torznab-or-newznab-indexer)
   - [Can I use flaresolverr indexers?](#can-i-use-flaresolverr-indexers)
   - [How can I add an indexer that is down or not functional?](#how-can-i-add-an-indexer-that-is-down-or-not-functional)
   - [Prowlarr will not sync to Sonarr](#prowlarr-will-not-sync-to-sonarr)
@@ -44,12 +46,12 @@ dateCreated: 2021-11-03T03:01:18.079Z
       - [File System Restore on Synology NAS](#file-system-restore-on-synology-nas)
   - [WebUI only Loads at localhost on Windows](#webui-only-loads-at-localhost-on-windows)
   - [Finding Cookies](#finding-cookies)
-  - [uTorrent is no longer working](#utorrent-is-no-longer-working)
   - [I got a pop-up that said config.xml was corrupt, what now?](#i-got-a-pop-up-that-said-configxml-was-corrupt-what-now)
   - [Invalid Certificate and other HTTPS or SSL issues](#invalid-certificate-and-other-https-or-ssl-issues)
   - [Help I have locked myself out](#help-i-have-locked-myself-out)
   - [Weird UI Issues](#weird-ui-issues)
-  - [VPNs, Prowlarr, and the \*ARRs](#vpns-jackett-and-the-arrs)
+  - [VPNs, Jackett, and the \*ARRs](#vpns-jackett-and-the-arrs)
+    - [Use of a VPN](#use-of-a-vpn)
   - [How do I stop the browser from launching on startup?](#how-do-i-stop-the-browser-from-launching-on-startup)
   - [Can I easily add all indexers at once?](#can-i-easily-add-all-indexers-at-once)
   
@@ -58,6 +60,7 @@ dateCreated: 2021-11-03T03:01:18.079Z
 If Prowlarr is exposed so that the UI can be accessed from outside your local network then you should have some form of authentication method enabled in order to access the UI. This is also increasingly required by Trackers and Indexers.
 
 As of Prowlarr v1, Authentication is Mandatory.
+
 - `AuthenticationType` and `AuthenticationMethod` are mandatory required attributes in the configuration file.
 
 ### Authentication Method
@@ -188,7 +191,7 @@ With Full Sync enabled, if any of the above change between the \*Arr App and Pro
 
 - `develop` - ![Current Develop/Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Develop&query=%24%5B0%5D.version&url=https://prowlarr.servarr.com/v1/update/develop/changes) -  (Beta): This is the testing edge. Released after tested in nightly to ensure no immediate issues. New features and bug fixes released here first after nightly. It can be considered semi-stable, but is still `beta`.
 
-> On GitHub, this is a snapshot of the `develop` branch at a specific point in time.
+> On GitHub, this is a snapshot of the `develop` branch at a specific point in time and is tagged as pre-release.
 {.is-warning}
 
 - `nightly` - ![Current Nightly/Unstable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Nightly&query=%24%5B0%5D.version&url=https://prowlarr.servarr.com/v1/update/nightly/changes) -  (Alpha/Unstable): This is the bleeding edge. It is released as soon as code is committed and passes all automated tests. This build may have not been used by us or other users yet. There is no guarantee that it will even run in some cases. This branch is only recommended for advanced users. Issues and self investigation are expected in this branch.  ***Use this branch only if you know what you are doing and are willing to get your hands dirty to recover a failed update.*** This version is updated immediately.
@@ -350,20 +353,6 @@ If you can only reach your web interface at `http://localhost:9696/` or `http://
 
 Some sites cannot be logged into automatically and require you to login manually then give the cookies to Prowlarr to work. [Please see this article for details.](/useful-tools#finding-cookies)
 
-## uTorrent is no longer working
-
-- Ensure the Web UI is enabled
-
-![faq_4_utorrent.png](/assets/general/faq_4_utorrent.png)
-
-- Turn on Web UI
-
-![faq_5_utorrent.png](/assets/general/faq_5_utorrent.png)
-
-- Ensure that the Alt Listening Port (Advanced => Web UI) is not the same as the Listening Port (Connections). We'd suggest changing the Web UI Alt Listening Port so as to not mess with any port forwarding for connections.
-
-![faq_6_utorrent.png](/assets/general/faq_6_utorrent.png)
-
 ## I got a pop-up that said config.xml was corrupt, what now?
 
 Prowlarr was unable to read your config file on start-up as it became corrupted somehow. In order to get Prowlarr back online, you will need to delete `.xml` in your AppData Folder, once deleted start Prowlarr and it will start on the default port (9696), you should now re-configure any settings you configured on the General Settings page.
@@ -380,14 +369,14 @@ If your download client and Prowlarr are on the same machine there is no reason 
 
 {#help-i-have-forgotten-my-password}
 
-To disable authentication (to reset your forgotten username or password) you will need need to edit `config.xml` which will be inside the [Prowlarr Appdata Directory](/prowlarr/appdata-directory)
-
+1. Close Prowlarr
 1. Open config.xml in a text editor
 1. Find the authentication method line will be
 `<AuthenticationMethod>Basic</AuthenticationMethod>` or `<AuthenticationMethod>Forms</AuthenticationMethod>`
-1. Change the `AuthenticationMethod` line to `<AuthenticationMethod>None</AuthenticationMethod>`
+***(Be sure that you do not have two AuthenticationMethod entries in your file)***
+1. Change the `AuthenticationMethod` line to `<AuthenticationMethod>External</AuthenticationMethod>`
 1. Restart Prowlarr
-1. Prowlarr will now be accessible without a password, you should go the `Settings: General` in the UI and set your username and password
+1. Prowlarr will now be accessible without a password, you should go the `Settings` => `General` in the UI, change the Authentication Method to Basic or Forms and set your new username and password
 
 ## Weird UI Issues
 
@@ -395,7 +384,7 @@ To disable authentication (to reset your forgotten username or password) you wil
 
 ## VPNs, Jackett, and the \*ARRs
 
-- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
+- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. If you're in a repressive country noted above it is likely your connection to your trackers needs to be VPN'd as well - in other words Jackett behind a VPN or Prowlarr using an Indexer Proxy. Other *Arr apps not connecting to trackers should not be behind a VPN.. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
 - In other words, putting the  \*Arrs (Lidarr, Prowlarr, Radarr, Readarr, and Lidarr) behind a VPN can and will make the applications unusable in some cases due to the services not being accessible.
 
 > **To be clear it is not a matter if VPNs will cause issues with the \*Arrs, but when: image providers will block you and cloudflare is in front of most of \*Arr servers (updates, metadata, etc.) and liable to block you too**

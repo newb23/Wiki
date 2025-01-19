@@ -2,7 +2,7 @@
 title: Radarr Supported
 description: 
 published: true
-date: 2023-09-01T16:45:41.479Z
+date: 2024-06-16T13:47:46.803Z
 tags: 
 editor: markdown
 dateCreated: 2021-06-23T07:55:24.002Z
@@ -87,9 +87,6 @@ This page is the disambiguation page for all `supported` wiki links (i.e. typica
 - Pass The Popcorn (PTP) {#passthepopcorn}
   - Private Tracker
   - [Refer to the Settings Page](/radarr/settings#indexer-settings)
-- Rarbg {#rarbg}
-  - Public Tracker
-  - [Refer to the Settings Page](/radarr/settings#indexer-settings)
 - Torrent RSS Feed {#torrentrssindexer}
   - Generic torrent RSS feed parser.
   > The RSS feed must contain a `pubdate`. The release size is recommended as well.
@@ -170,27 +167,51 @@ This page is the disambiguation page for all `supported` wiki links (i.e. typica
 - Radarr {#radarrimport}
   - TRaSH has [a guide](https://trash-guides.info/Radarr/Tips/Sync-2-radarr-sonarr/) for syncing two instances
 - RSS List {#rssimport}
+	- This list format inherit from old IMDB RSS feeds. It only needs a title and a year which can be useful for non-enriched data.
+      > Year is directly parsed from the title tag value
+
+      Here is a sample data : 
+      ```XML
+      <rss>
+        <channel>
+            <title>My custom RSS list</title>
+            <description></description>
+            <link>http://example.com/rss</link>
+            <lastBuildDate>Sun, 16 Jun 2024 13:54:33 GMT</lastBuildDate>
+            <item>
+                <title><![CDATA[ Tehachapi (2023) ]]></title>
+                <guid isPermaLink="false">Tehachapi (2023)</guid>
+            </item>
+            <item>
+                <title><![CDATA[ Dissidente (2023) ]]></title>
+                <guid isPermaLink="false">Dissidente (2023)</guid>
+            </item>
+        </channel>
+      </rss>
+      ```
 - StevenLu Custom {#stevenluimport}
-	- Allows you to create custom movies lists in json format.
-  	Your feed requires for each movie either a `title` or an `imdb_id`, both can be provided.
-  		> Note that `imdb_id` is safer than `title` as it does not require a broad search
-    Here is a sample valid json : 
-      ```
-      [
-          {
-            "title": "The Wastetown",
-            "poster_url": "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/6J32RMp8uko8CUEM3rYP962hQun.jpg",
-            "imdb_id": "tt22889064"
-          },
-          {
-            "title": "Wild Sunflowers",
-            "poster_url": "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/tHK4c0UZKrqkmXZ2HJeGNhNetRz.jpg",
-            "imdb_id": "tt13774830"
-          }
-      ]
-      ```
-      - Additional keys can be added in items (will be ignored)
-      - For an empty list just return an empty json array `[]`
+  - Allows you to create custom movies lists in json format.
+   Your feed requires for each movie either a `title` or an `imdb_id`, both can be provided.
+    > Note that `imdb_id` is safer than `title` as it does not require a broad search
+    Here is a sample valid json :
+
+    ```JSON
+    [
+        {
+          "title": "The Wastetown",
+          "poster_url": "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/6J32RMp8uko8CUEM3rYP962hQun.jpg",
+          "imdb_id": "tt22889064"
+        },
+        {
+          "title": "Wild Sunflowers",
+          "poster_url": "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/tHK4c0UZKrqkmXZ2HJeGNhNetRz.jpg",
+          "imdb_id": "tt13774830"
+        }
+    ]
+    ```
+
+  - Additional keys can be added in items (will be ignored)
+  - For an empty list just return an empty json array `[]`
 - StevenLu List {#stevenlu2import}
 - TMDb Collection {#tmdbcollectionimport}
   - Collection Lists are no longer supported in Radarr v4.2 and have been migrated to collections within Radarr. See the [Collections](/radarr/library#collections) section for more details.

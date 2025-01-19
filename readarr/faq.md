@@ -2,20 +2,25 @@
 title: Readarr FAQ
 description: 
 published: true
-date: 2023-10-30T02:08:35.101Z
+date: 2024-08-27T04:41:05.746Z
 tags: readarr, needs-love, troubleshooting, faq
 editor: markdown
 dateCreated: 2021-05-25T20:01:09.320Z
 ---
+
+> [Read More on Metadata Issues](/readarr/metadata-issues)
+{.is-info}
 
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
   - [How does Readarr work?](#how-does-readarr-work)
   - [Forced Authentication](#forced-authentication)
+    - [Authentication Method](#authentication-method)
+    - [Authentication Required](#authentication-required)
   - [How does Readarr find books?](#how-does-readarr-find-books)
   - [How are possible downloads compared?](#how-are-possible-downloads-compared)
-  - [Error of a task was canceled](#a-task-was-canceled)
+  - [A Task was Canceled](#a-task-was-canceled)
   - [What are Lists and what can they do for me?](#what-are-lists-and-what-can-they-do-for-me)
   - [Why are lists sync times so long and can I change it?](#why-are-lists-sync-times-so-long-and-can-i-change-it)
   - [Why can I not add a new book or author to Readarr?](#why-can-i-not-add-a-new-book-or-author-to-readarr)
@@ -53,9 +58,10 @@ dateCreated: 2021-05-25T20:01:09.320Z
   - [How do I stop the browser from launching on startup?](#how-do-i-stop-the-browser-from-launching-on-startup)
   - [Weird UI Issues](#weird-ui-issues)
   - [VPNs, Jackett, and the \*ARRs](#vpns-jackett-and-the-arrs)
+    - [Use of a VPN](#use-of-a-vpn)
   - [Jackett's /all Endpoint](#jacketts-all-endpoint)
     - [Jackett /All Solutions](#jackett-all-solutions)
-  - [Why are there two files? | Why is there a file left in downloads?](#why-are-there-two-files-why-is-there-a-file-left-in-downloads)
+  - [Why are there two files? | Why is there a file left in downloads?](#why-are-there-two-files--why-is-there-a-file-left-in-downloads)
   - [Calibre is saying "Calibre rejected duplicate book" but it's not](#calibre-is-saying-calibre-rejected-duplicate-book-but-its-not)
 
 ## How does Readarr work?
@@ -71,6 +77,7 @@ dateCreated: 2021-05-25T20:01:09.320Z
 If Readarr is exposed so that the UI can be accessed from outside your local network then you should have some form of authentication method enabled in order to access the UI. This is also increasingly required by Trackers and Indexers.
 
 As of Readarr v1, Authentication is Mandatory.
+
 - `AuthenticationType` and `AuthenticationMethod` are mandatory required attributes in the configuration file.
 
 ### Authentication Method
@@ -155,7 +162,7 @@ This change was due to not have our server get killed by people updating lists e
 
 - Readarr has a hardcoded minimum percent match threshold when comparing the to-be-imported file against the book and author. Matches below this threshold will need to be manually imported.
 - This is not user configurable.
-- Currently this is 80% [1-_bookThreshold](https://github.com/Readarr/Readarr/blob/develop/src/NzbDrone.Core/MediaFiles/BookImport/Specifications/CloseAlbumMatchSpecification.cs#L11)
+- Currently, this is 80% [1-_bookThreshold](https://github.com/Readarr/Readarr/blob/develop/src/NzbDrone.Core/MediaFiles/BookImport/Specifications/CloseAlbumMatchSpecification.cs#L11)
 - The development team is considering lowering this to somewhere in the 70%s. If you have false negative matches between 70% and 80% please share them with us on discord.
 
 ## How can I rename my author folders?
@@ -164,29 +171,15 @@ This change was due to not have our server get killed by people updating lists e
 
 > The same process applies for moving/changing Author paths as well{.is-info}
 
-1. Author
-1. Author Editor
+1. Authors
+1. Click on "Author Editor"
 1. Select what authors need their folder renamed
 1. Change Root Folder to the same Root Folder that the authors currently exist in
-1. Select "Yes move files"
+1. Select "Yes, move the files"
 
 ## How can I mass delete authors from the wanted list?
 
 - Use Author Editor from the Author tab => Select authors you want to delete => Delete
-
-## Why doesn't Readarr work behind a reverse proxy
-
-- Readarr uses .NET Core and a new webserver. In order for SignalR to work, the UI buttons to work, database changes to take, and other items. It requires the following addition to the location block for Readarr:
-
-```none
- proxy_http_version 1.1;
- proxy_set_header Upgrade $http_upgrade;
- proxy_set_header Connection $http_connection;
-```
-
-- Make sure you `do not` include `proxy_set_header Connection "Upgrade";` as suggested by the nginx documentation. `THIS WILL NOT WORK`
-- [See this ASP.NET Core issue](https://github.com/aspnet/AspNetCore/issues/17081)
-- If you are using a CDN like Cloudflare ensure websockets are enabled to allow websocket connections.
 
 ## How do I update Readarr?
 
@@ -199,14 +192,14 @@ This change was due to not have our server get killed by people updating lists e
 
 *This will not install the bits from that branch immediately, it will happen during the next update.*
 
-- `master` - ![Current Master/Stable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Master&query=%24%5B0%5D.version&url=https://readarr.servarr.com/v1/update/master/changes) -    (Default/Stable): It has been tested by users on the develop and nightly branches and it’s not known to have any major issues. On GitHub, this is the `master` branch. 
+- `master` - ![Current Master/Stable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Master&query=%24%5B0%5D.version&url=https://readarr.servarr.com/v1/update/master/changes) -    (Default/Stable): It has been tested by users on the develop and nightly branches and it’s not known to have any major issues. On GitHub, this is the `master` branch.
 
 > **Readarr does not yet have a stable release.**
 {.is-danger}
 
 - `develop` - ![Current Develop/Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Develop&query=%24%5B0%5D.version&url=https://readarr.servarr.com/v1/update/develop/changes) -  (Beta): This is the testing edge. Released after tested in nightly to ensure no immediate issues. New features and bug fixes released here first after nightly. It can be considered semi-stable, but is still `beta`.
 
-> **Warning: You may not be able to go back to `master` after switching to this branch.** On GitHub, this is a snapshot of the `develop` branch at a specific point in time.
+> **Warning: You may not be able to go back to `master` after switching to this branch.** On GitHub, this is a snapshot of the `develop` branch at a specific point in time and is tagged as pre-release.
 {.is-warning}
 
 - `nightly` - ![Current Nightly/Unstable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Nightly&query=%24%5B0%5D.version&url=https://readarr.servarr.com/v1/update/nightly/changes) -  (Alpha/Unstable): This is the bleeding edge. It is released as soon as code is committed and passes all automated tests. This build may have not been used by us or other users yet. There is no guarantee that it will even run in some cases. This branch is only recommended for advanced users. Issues and self investigation are expected in this branch.  ***Use this branch only if you know what you are doing and are willing to get your hands dirty to recover a failed update.*** This version is updated immediately.
@@ -217,9 +210,9 @@ This change was due to not have our server get killed by people updating lists e
 - Note: If your install is through Docker append `:testing`, `:develop`, or `:nightly` to the end of your container tag depending on who makes your builds.
 
 |                                                           | `master` (stable) ![Current Stable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Master&query=%24%5B0%5D.version&url=https://readarr.servarr.com/v1/update/master/changes) | `develop` (beta) ![Current Develop/Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Develop&query=%24%5B0%5D.version&url=https://readarr.servarr.com/v1/update/develop/changes) | `nightly` (unstable) ![Current Nightly/Alpha](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Nightly&query=%24%5B0%5D.version&url=https://readarr.servarr.com/v1/update/nightly/changes) |
-| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [hotio](https://hotio.dev/containers/readarr)             | no stable release yet                                                                                                                                                                                           | `testing`                                                                                                                                                                                                            | `nightly`                                                                                                                                                                                                                 |
-| [lsio](https://docs.linuxserver.io/images/docker-readarr) | no stable release yet                                                                                                                                                                                           | `develop`                                                                                                                                                                                                            | `nightly`                                                                                                                                                                                                                 |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [hotio](https://hotio.dev/containers/readarr)             | no stable release yet                                                                                                                                                                                        | `testing`                                                                                                                                                                                                           | `nightly`                                                                                                                                                                                                                |
+| [lsio](https://docs.linuxserver.io/images/docker-readarr) | no stable release yet                                                                                                                                                                                        | `develop`                                                                                                                                                                                                           | `nightly`                                                                                                                                                                                                                |
 
 ### Can I update Readarr inside my Docker container?
 
@@ -397,7 +390,7 @@ To disable authentication (to reset your forgotten username or password) you wil
 1. Find the authentication method line will be
 `<AuthenticationMethod>Basic</AuthenticationMethod>` or `<AuthenticationMethod>Forms</AuthenticationMethod>`
 *(Be sure that you do not have two AuthenticationMethod entries in your file)*
-1. Change the `AuthenticationMethod` line to `<AuthenticationMethod>None</AuthenticationMethod>`
+1. Change the `AuthenticationMethod` line to `<AuthenticationMethod>External</AuthenticationMethod>`
 1. Restart Readarr
 1. Readarr will now be accessible without a password, you should go the `Settings: General` in the UI and set your username and password
 
@@ -415,7 +408,7 @@ Depending on your OS, there are multiple possible ways.
 
 ## VPNs, Jackett, and the \*ARRs
 
-- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
+- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. If you're in a repressive country noted above it is likely your connection to your trackers needs to be VPN'd as well - in other words Jackett behind a VPN or Prowlarr using an Indexer Proxy. Other *Arr apps not connecting to trackers should not be behind a VPN.. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
 - In other words, putting the  \*Arrs (Lidarr, Prowlarr, Radarr, Readarr, and Lidarr) behind a VPN can and will make the applications unusable in some cases due to the services not being accessible.
 
 > **To be clear it is not a matter if VPNs will cause issues with the \*Arrs, but when: image providers will block you and cloudflare is in front of most of \*Arr servers (updates, metadata, etc.) and liable to block you too**
@@ -461,10 +454,10 @@ This is expected. With a setup that supports [hardlinks](https://trash-guides.in
 
 1. Readarr will send a download request to your client, and associate it with a label or category name that you have configured in the download client settings. Examples: movies, tv, series, music, etc.
 1. Readarr will monitor your download clients active downloads that use that category name. This monitoring occurs via your download client's API.
-1. Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within under the specific download client). When files are imported to your media folder will hardlink the file if supported by your setup or copy if not hardlinks are not supported.
+1. Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within under the specific download client). When files are imported to your media folder will hardlinkthe file if supported by your setup or copy if not hard links are not supported.
 1. If the "Completed Download Handling - Remove Completed" option is enabled in Readarr's settings, Readarr will delete the original file and torrent from your download client, but only if the download client reports that seeding is complete and torrent is stopped.
 
-> Hardlinks are enabled by default. [A hardlink will allow not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hardlink creation fails or your setup does not support hardlinks then will fall back and copy the file.
+> Hard links are enabled by default. [A hard link will allow not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hard link creation fails or your setup does not support hard links then will fall back and copy the file.
 {.is-info}
 
 ## Calibre is saying "Calibre rejected duplicate book" but it's not

@@ -2,7 +2,7 @@
 title: Sonarr Supported
 description: 
 published: true
-date: 2023-11-26T09:44:48.190Z
+date: 2024-08-02T12:07:02.466Z
 tags: 
 editor: markdown
 dateCreated: 2021-06-23T07:55:33.769Z
@@ -92,9 +92,6 @@ This page is the disambiguation page for all "supported" wiki links (i.e. typica
       - This can be fixed when / if [Pull Request #4637](https://github.com/Sonarr/Sonarr/pull/4637) is merged
   - > Nyaa frowns upon automation and frequently will ban your IP. {.is-warning}
   - [Refer to the Settings Page](/sonarr/settings#indexer-settings)
-- Rarbg {#rarbg}
-  - Public Tracker
-  - [Refer to the Settings Page](/sonarr/settings#indexer-settings)
 - Torrent RSS Feed {#torrentrssindexer}
   - Generic torrent RSS feed parser.
   > The RSS feed must contain a `pubdate`. The release size is recommended as well.
@@ -116,7 +113,7 @@ This page is the disambiguation page for all "supported" wiki links (i.e. typica
 # Notifications
 
 {#notification}
-
+- Apprise {#apprise}
 - Custom Script {#customscript}
   - This allows you to make a custom script for when a particular action happens this script will run. See [Custom Scripts](/sonarr/custom-scripts) for more details.
 - Discord {#discord}
@@ -134,6 +131,8 @@ This page is the disambiguation page for all "supported" wiki links (i.e. typica
 - Kodi {#xbmc}
   - Kodi spawned from the love of media. It is an entertainment hub that brings all your digital media together into a beautiful and user friendly package. It is 100% free and open source, very customizable and runs on a wide variety of devices. It is supported by a dedicated team of volunteers and a huge community. By adding Kodi as a connection you can update Kodi's library when a new episode has been added to Sonarr.
 - Mailgun {#mailgun}
+- Notifiar {#notifiar}
+- Ntfy.sh {#ntfysh}
 
 - Plex Media Server {#plexserver}
   - The server for your self hosted Plex system, Enabling this is much like Kodi will allow you to push an update to your plex server notifying it that a new/upgraded episode is available.
@@ -148,14 +147,18 @@ This page is the disambiguation page for all "supported" wiki links (i.e. typica
 - Pushcut {#pushcut}
 - Pushover {#pushover}
 - SendGrid {#sendgrid}
+- Signal {#signal-cli}
+	- Requires [Signal-CLI](https://github.com/AsamK/signal-cli)
+- Simplepush {#simplepush}
 - Slack {#slack}
 - Synology Indexer {#synologyindexer}
 - Telegram {#telegram}
+- Trakt {#trakt}
 - Twitter {#twitter}
   - See this [Tips and Tricks entry](/useful-tools#twitter)
 - Webhook {#webhook}
 
-### Depricated Notifications
+## Deprecated Notifications
 
 - Boxcar {#boxcar}
 - Plex Home Theater {#plexhometheater}

@@ -61,7 +61,7 @@ dateCreated: 2022-04-03T03:50:06.989Z
     - [Tracker needs RawSearch Caps](#tracker-needs-rawsearch-caps)
     - [Media is Unmonitored](#media-is-unmonitored)
     - [Wrong categories](#wrong-categories)
-    - [Query Successful - No Results returned](#query-successful-no-results-returned)
+    - [Query Successful - No Results returned](#query-successful---no-results-returned)
     - [Wrong results](#wrong-results)
     - [Missing Results](#missing-results)
     - [Certificate validation](#certificate-validation)
@@ -92,6 +92,7 @@ The more we know, the easier it is to help you.
 # Logging and Log Files
 
 It is likely beneficial to also review the Common Troubleshooting problems:
+
 - [Downloads and Importing Common Problems](#common-problems)
 - [Searching Indexers and Trackers Common Problems](#common-problems-1)
 {.links-list}
@@ -115,6 +116,7 @@ To provide good and useful logs for sharing:
 6. Use [Gist](https://gist.github.com/), [0bin (**Be sure to disable colorization**)](https://0bin.net/), [PrivateBin](https://privatebin.net/), [Notifiarr PrivateBin](http://logs.notifiarr.com/), [Hastebin](https://hastebin.com/), [Ubuntu's Pastebin](https://pastebin.ubuntu.com/), or similar sites - excluding those noted to avoid below - to share the copied logs from above
 
 **Warnings:**
+
 - **Do not use [pastebin.com](https://pastebin.com) as their filters have a tendency to block the logs.
 - Do not use [pastebin.pl](https://pastebin.pl) as their site is frequently not accessible.
 - Do not use [JustPasteIt](https://justpaste.it/) as their site does not facilitate reviewing logs.
@@ -124,6 +126,7 @@ To provide good and useful logs for sharing:
 - Do not share console output, docker container output, or anything other than the application logs specified
 
 **Important Note:**
+
 - When using [0bin](https://0bin.net/), be sure to disable colorization and do not burn after reading.
 
 - Alternatively If you're looking for a specific entry in an old log file but aren't sure which one you can use N++. You can use the Notepad++ "Find in Files" function to search old log files as needed.
@@ -299,7 +302,7 @@ If you have Whisparr in Docker and the Download Client in non-Docker (or vice ve
 Logs will look like
 
 ```none
-2022-02-03 14:03:54.3|Error|DownloadedMovieImportService|Import failed, path does not exist or is not accessible by Whisparr: /volume3/data/torrents/movies/The.Orville.2022.1080p.WEB.H264-GGEZ[rarbg]. Ensure the path exists and the user running Whisparr has the correct permissions to access this file/folder
+2022-02-03 14:03:54.3|Error|DownloadedMovieImportService|Import failed, path does not exist or is not accessible by Whisparr: /volume3/data/torrents/movies/The.Orville.2022.1080p.WEB.H264-GGEZ[eztv]. Ensure the path exists and the user running Whisparr has the correct permissions to access this file/folder
 ```
 
 Thus `/volume3/data` does not exist within Whisparr's container or is not accessible.
@@ -320,7 +323,7 @@ Thus `/volume3/data` does not exist within Whisparr's container or is not access
   - Sync at a lower, common folder that contains both incomplete and complete.
   - Sync to a location that is on the same file system locally as your library and looks like it (docker and network shares make this easy to misconfigure)
   - You want to sync the incomplete and complete so that when the torrent client does the move, that is reflected locally and all the files are already "there" (even if they're still downloading). Then you want to use hard links because even if it imports before its done, they'll still finish.
-  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hardlink possible means that is still okay.
+  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hard link possible means that is still okay.
   - (Optional - if applicable and/or required (e.g. remote usenet client)) Configure a custom script to run on import/download/upgrade to remove the remote file
 - Alternatively a remote mount rather than a remote sync setup is significantly less complicated to configure, but typically slowly.
   - Mount your remote storage with sshfs or another network file system protocol
@@ -354,7 +357,7 @@ Logs will look like
 2022-02-28 18:51:01.1|Error|DownloadedMovieImportService|Import failed, path does not exist or is not accessible by Whisparr: /data/downloads/The.Movie. Ensure the path exists and the user running Whisparr has the correct permissions to access this file/folder
 ```
 
-Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that runs as needs to be able to read and write the downloads folder.
+Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist - and if docker that the mounts are aligned and consistent. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that runs as needs to be able to read and write the downloads folder.
 
 - For Windows Users this may be due to running as a service:
   - the Windows Service runs under the 'Local Service' account, by default this account does not have permissions to access your user's home directory unless permissions have been assigned manually. This is particularly relevant when using download clients that are configured to download to your home directory.
@@ -585,8 +588,6 @@ You’ll be connecting to most indexers/trackers via https, so you’ll need tha
 ### Hitting rate limits
 
 If you run your through a VPN or proxy, you may be competing with 10s or 100s or 1000s of other people all trying to use services like , theXEM ,and/or your indexers and trackers. Rate limiting and DDOS protection are often done by IP address and your VPN/proxy exit point is *one* IP address. Unless you’re in a repressive country like China, Australia or South Africa you don’t need to VPN/proxy .
-
-Rarbg has a tendency to have some sort of rate limiting within their API and displays as responding with no results.
 
 ### IP Ban
 

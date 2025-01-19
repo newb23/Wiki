@@ -1,8 +1,8 @@
 ---
 title: Useful Tools
-description: 
+description: companions to the *Arr Suite of Applications or media hoarding in general. They are not maintained, developed, nor supported by the *Arr Development Team.
 published: true
-date: 2023-09-09T21:37:00.698Z
+date: 2024-12-10T21:27:40.985Z
 tags: useful-tools
 editor: markdown
 dateCreated: 2021-06-05T20:51:53.183Z
@@ -15,48 +15,50 @@ dateCreated: 2021-06-05T20:51:53.183Z
   - [Recovering a Corrupt DB (UI) (Windows)](#recovering-a-corrupt-db-ui-windows)
   - [Command Line DB Recovery](#command-line-db-recovery)
 - [Finding Cookies](#finding-cookies)
+  - [General Instructions](#general-instructions)
+    - [Notes](#notes)
   - [Chrome](#chrome)
   - [Firefox](#firefox)
 - [Clearing Cookies and Local Storage](#clearing-cookies-and-local-storage)
   - [Chrome](#chrome-1)
   - [Firefox](#firefox-1)
   - [Microsoft Edge (Chromium)](#microsoft-edge-chromium)
-  {.links-list}
-- [Other Projects and Programs - Request Apps \*Arrs](#other-projects-and-programs-request-apps-arrs)
-  - [Notifiarr](#notifiarr-fka-discord-notifier)
+- [Using Environment Variables for Config](#using-environment-variables-for-config)
+- [Other Projects and Programs - Request Apps \*Arrs](#other-projects-and-programs---request-apps-arrs)
+  - [Notifiarr (fka Discord Notifier)](#notifiarr-fka-discord-notifier)
   - [Ombi](#ombi)
   - [Overseerr](#overseerr)
+  - [Jellyserr](#jellyseerr)
   - [Petio](#petio)
-  {.links-list}
-- [Other Projects and Programs - \*Arr Related](#other-projects-and-programs-arr-related)
+- [Other Projects and Programs - \*Arr Related](#other-projects-and-programs---arr-related)
   - [Remote Control](#remote-control)
     - [LunaSea](#lunasea)
-    - [Radarr & Sonarr Companion - Android App](#radarr-sonarr-companion-android-app)
-    - [nzb360 - Android App](#nzb360-android-app)
-    {.links-list}
+    - [Radarr \& Sonarr Companion - Android App](#radarr--sonarr-companion---android-app)
+    - [nzb360 - Android App](#nzb360---android-app)
   - [Lidarr](#lidarr)
     - [AMD](#amd)
     - [AMVD](#amvd)
   - [Radarr](#radarr)
-    - [AMTD](#amtd)
+  - [AMTD](#amtd)
   - [Subtitles](#subtitles)
-    - [Bazarr](#bazarr)
+  - [Bazarr](#bazarr)
 - [Other Projects and Programs - Torrents/Downloading](#other-projects-and-programs-torrentsdownloading)
   - [Cross-Seed](#cross-seed)
+  - [Toolbarr](#toolbarr)
   - [Unpackerr](#unpackerr)
   - [qBit Management](#qbit-management)
 - [Other Projects and Programs](#other-projects-and-programs)
   - [Filebot](#filebot)
   - [JDupes](#jdupes)
-  - [Cuban's Just A Bunch Of Starr Scripts](#just-a-bunch-of-starr-scripts)
   - [Drazzilb's UserScripts](#drazzilbs-userscripts)
-  - [Just A Bunch Of Plex Scripts (JBOPS)](#just-a-bunch-of-plex-scripts)
+  - [Just A Bunch Of Starr Scripts](#just-a-bunch-of-starr-scripts)
+  - [Just A Bunch Of Plex Scripts](#just-a-bunch-of-plex-scripts)
   - [Plex Meta Manager](#plex-meta-manager)
   - [Tautulli](#tautulli)
   - [Tdarr](#tdarr)
-  - [tdarr_inform](#tdarr_inform)
-  {.links-list}
-- [Twitter Connect Instructions](#twitter-connect)
+  - [tdarr\_inform](#tdarr_inform)
+  - [Deleterr](#deleterr)
+  - [Twitter Connect](#twitter-connect)
 
 The following apps are companions to the \*Arr Suite of Applications or media hoarding in general. They are not maintained, developed, nor supported by the \*Arr Development Team. Please direct any specific support questions to the respective application development team.
 
@@ -99,7 +101,7 @@ Note that the application's database can be found in the Application Data Direct
 1. Close the database
 1. New Database => File => Import => import that file from the previous export step
 1. Any import errors or constraint issues, clean up the problematic insert statement if possible or delete it
-1. Execute the following SQL `VACUUM;`
+1. In the Execute SQL tab, execute the following SQL `VACUUM;`
 1. Save the database when prompted.
 1. Tools => Integrity Check; the result should say OK
 1. Close the database
@@ -200,6 +202,64 @@ The below instructions are for \*Nix Operating Systems, but the concept will be 
 1. Click the arrow for the site
 1. Click the trash icon for the site
 
+# Using Environment Variables for Config
+
+All of the *arrs now have the ability to use environment variables to override entries in config.xml. The pattern for variable naming is predictable and can be used to set any config entry. In general the environment variables are comprised of 3 parts, delimited by two underscores.
+
+`APPNAME__CONFIGNAMESPACE__CONFIGITEM`
+
+The app name that should be used is simply the app name that the environment variable is passed to: `RADARR`, `SONARR`, `PROWLARR`, etc.
+
+The config namespaces are currently predictable and shared between all apps. It is simply the option types for the options files in the project, located in the `src/NzbDrone.Common/Options` directory. The namespaces are currently:
+
+* APP
+* AUTH
+* LOG
+* POSTGRES
+* SERVER
+* UPDATE
+
+Each of these options namespaces has several config items below it. Below you can find the entire directory for each. You must replace `*ARR` with whatever *arr app you are setting up. These have not all been tested and may be wrong.
+
+| Option Name in config.xml    | Namespace | Option Name | Full Environment Variable Name      |
+|-----------------|-----------|--------------------|---------------------------------|
+| InstanceName    | APP       | INSTANCENAME        | *ARR__APP__INSTANCENAME         |
+| Theme           | APP       | THEME               | *ARR__APP__THEME                |
+| LaunchBrowser   | APP       | LAUNCHBROWSER       | *ARR__APP__LAUNCHBROWSER        |
+| ApiKey          | AUTH      | APIKEY             | *ARR__AUTH__APIKEY              |
+| AuthenticationEnabled         | AUTH      | ENABLED            | *ARR__AUTH__ENABLED             |
+| AuthenticationMethod          | AUTH      | METHOD             | *ARR__AUTH__METHOD              |
+| AuthenticationRequired        | AUTH      | REQUIRED           | *ARR__AUTH__REQUIRED            |
+| LogLevel              | LOG       | LEVEL                   | *ARR__LOG__LEVEL                 |
+| FilterSentryEvents  | LOG       | FILTERSENTRYEVENTS       | *ARR__LOG__FILTERSENTRYEVENTS    |
+| LogRotate             | LOG       | ROTATE                  | *ARR__LOG__ROTATE                |
+| LogSizeLimit          | LOG       | SIZELIMIT               | *ARR__LOG__SIZELIMIT             |
+| LogSql                | LOG       | SQL                     | *ARR__LOG__SQL                   |
+| ConsoleLogLevel       | LOG       | CONSOLELEVEL            | *ARR__LOG__CONSOLELEVEL          |
+| ConsoleLogFormat      | LOG       | CONSOLEFORMAT           | *ARR__LOG__CONSOLEFORMAT         |
+| AnalyticsEnabled   | LOG       | ANALYTICSENABLED         | *ARR__LOG__ANALYTICSENABLED       |
+| SyslogServer       | LOG       | SYSLOGSERVER            | *ARR__LOG__SYSLOGSERVER          |
+| SyslogPort         | LOG       | SYSLOGPORT              | *ARR__LOG__SYSLOGPORT            |
+| SyslogLevel        | LOG       | SYSLOGLEVEL             | *ARR__LOG__SYSLOGLEVEL           |
+| DbEnabled          | LOG       | DBENABLED               | *ARR__LOG__DBENABLED             |
+| PostgresHost        | POSTGRES  | HOST                    | *ARR__POSTGRES__HOST             |
+| PostgresPort        | POSTGRES  | PORT                    | *ARR__POSTGRES__PORT             |
+| PostgresUser        | POSTGRES  | USER                    | *ARR__POSTGRES__USER             |
+| PostgresPassword    | POSTGRES  | PASSWORD                | *ARR__POSTGRES__PASSWORD         |
+| PostgresMainDb      | POSTGRES  | MAINDB                  | *ARR__POSTGRES__MAINDB           |
+| PostgresLogDb       | POSTGRES  | LOGDB                   | *ARR__POSTGRES__LOGDB            |
+| UrlBase           | SERVER    | URLBASE             | *ARR__SERVER__URLBASE           |
+| BindAddress       | SERVER    | BINDADDRESS         | *ARR__SERVER__BINDADDRESS       |
+| Port              | SERVER    | PORT                | *ARR__SERVER__PORT              |
+| EnableSsl         | SERVER    | ENABLESSL           | *ARR__SERVER__ENABLESSL         |
+| SslPort           | SERVER    | SSLPORT             | *ARR__SERVER__SSLPORT           |
+| SslCertPath       | SERVER    | SSLCERTPATH         | *ARR__SERVER__SSLCERTPATH       |
+| SslCertPassword   | SERVER    | SSLCERTPASSWORD     | *ARR__SERVER__SSLCERTPASSWORD   |
+| UpdateMechanism       | UPDATE    | MECHANISM           | *ARR__UPDATE__MECHANISM         |
+| UpdateAutomatically   | UPDATE    | AUTOMATICALLY       | *ARR__UPDATE__AUTOMATICALLY     |
+| UpdateScriptPath      | UPDATE    | SCRIPTPATH          | *ARR__UPDATE__SCRIPTPATH        |
+| Branch          | UPDATE    | BRANCH              | *ARR__UPDATE__BRANCH            |
+
 # Other Projects and Programs - Request Apps \*Arrs
 
 ## Notifiarr (fka Discord Notifier)
@@ -226,6 +286,10 @@ Highlights
 
 [Overseerr](https://overseerr.dev/) is a request management and media discovery tool built to work with your existing Plex ecosystem.
 
+## Jellyseerr
+
+[Jellyseerr](https://github.com/Fallenbagel/jellyseerr) is a fork of Overseerr built to bring support for Jellyfin & Emby media servers.
+
 ## Petio
 
 [Petio](https://petio.tv/) is a third party companion app available to Plex server owners to allow their users to request, review and discover content.
@@ -238,7 +302,7 @@ The app is built to appear instantly familiar and intuitive to even the most tec
 
 ### LunaSea
 
-[LunaSea](https://www.lunasea.app/) is a fully featured, open source self-hosted controller! Focused on giving you a seamless experience between all of your self-hosted media software
+[LunaSea](https://www.lunasea.app/) is a fully featured, open source self-hosted controller! Focused on giving you a seamless experience between all of your self-hosted media software. Manage new media content fetched via Lidarr, Radarr, and Sonarr.
 
 ### Radarr & Sonarr Companion - Android App
 
@@ -274,15 +338,15 @@ nzb360 provides management of Sonarr, Radarr, Lidarr, torrents, usenet, and othe
 
 ## Cross-Seed
 
-[Cross-Seed](https://github.com/mmgoodnow/cross-seed) is an app designed to help you download torrents that you can cross seed based on your existing torrents. It is designed to match conservatively to minimize manual intervention. It supports Jackett and Qbittorrent/rTorrent at this time.
+[Cross-Seed](https://cross-seed.org) is an app designed to help you download torrents that you can cross seed based on your existing torrents. It is designed to match conservatively to minimize manual intervention. It supports Jackett and Qbittorrent/rTorrent at this time.
 
 ## Toolbarr
 
-[Toolbarr](https://github.com/Notifiarr/toolbarr) provides a suite of utilities to fix problems with Starr applications. Toolbarr allows you to perform various actions against your Starr apps and their SQLite3 databases. The most useful feature is being able to convert paths from linux to windows and windows to linux.
+[Toolbarr](https://github.com/Notifiarr/toolbarr) provides a suite of utilities to fix problems with Starr applications. Toolbarr allows you to perform various actions against your Starr apps and their SQLite3 databases. The most useful [feature is being able to convert paths from linux to windows and windows to linux](https://github.com/Notifiarr/toolbarr/wiki/Change-Root-Folder).
 
 ## Unpackerr
 
-- [Unpackerr](https://github.com/unpackerr/unpackerr) This application runs as a daemon on your download host. It checks for completed downloads and extracts them so \*Arr may import them.
+[Unpackerr](https://unpackerr.zip) This application runs as a daemon on your download host. It checks for completed downloads and extracts them so \*Arr may import them.
 
 - There are a handful of options out there for extracting and deleting files after your client downloads them. Captain just didn't care for any of them, so he wrote his own. He wanted a small single-binary with reasonable logging that can extract downloaded archives and clean up the mess after they've been imported.
 
@@ -296,7 +360,7 @@ nzb360 provides management of Sonarr, Radarr, Lidarr, torrents, usenet, and othe
 - Automatically add cross-seed torrents in paused state (used in conjunction with the [cross-seed script](#cross-seed))
 - Recheck paused torrents sorted by lowest size and resume if completed
 - Remove orphaned files from your root directory that are not referenced by qBittorrent
-- Tag any torrents that have no hard links and utilize Share Limits to remove them 
+- Tag any torrents that have no hard links and utilize Share Limits to remove them
 - Apply Share Limits based on tags and categories
 
 # Other Projects and Programs
@@ -307,13 +371,13 @@ nzb360 provides management of Sonarr, Radarr, Lidarr, torrents, usenet, and othe
 
 ## JDupes
 
-[Jdupes](https://github.com/jbruchon/jdupes) is a program for identifying and taking actions upon duplicate files.
+[Jdupes](https://codeberg.org/jbruchon/jdupes) is a program for identifying and taking actions upon duplicate files.
 
 > TRaSH [has a guide](https://trash-guides.info/jdupes) as well {.is-info}
 
 - `jdupes -M -r "/data/tv/" "/data/tv/.torrents/"` <= this would check for double files and print a summary of the results
 
-- `jdupes -L -r "/data/tv/" "/data/tv/.torrents/"` <= this would recreate them as hardlinks thus reducing the used duplicate space
+- `jdupes -L -r "/data/tv/" "/data/tv/.torrents/"` <= this would recreate them as hard links thus reducing the used duplicate space
 
 ## Drazzilb's UserScripts
 
@@ -330,9 +394,11 @@ nzb360 provides management of Sonarr, Radarr, Lidarr, torrents, usenet, and othe
 - [Just A Bunch Of Plex Scripts (JBOPS)](https://github.com/blacktwin/JBOPS)
 - [TRaSH Guides JBOPS 4K Transcode Stopping with Tautulli](https://trash-guides.info/Plex/Tips/4k-transcoding/)
 
-## Plex Meta Manager
+## Kometa
 
-[Plex Meta Manager (PMM)](https://github.com/meisnate12/Plex-Meta-Manager) is a Python script to update metadata information for movies, shows, and collections as well as automatically build collections.
+[Kometa (FKA Meta Manager (PMM))](https://kometa.wiki/en/latest/) is a Python script to update metadata information for movies, shows, and collections as well as automatically build collections.
+
+Kometa (formerly known as Plex Meta Manager) is a powerful tool designed to give you complete control over your media libraries. With Kometa, you can take your customization to the next level, with granular control over metadata, collections, overlays, and much more.
 
 ## Tautulli
 

@@ -2,7 +2,7 @@
 title: Readarr Troubleshooting
 description: 
 published: true
-date: 2023-07-24T19:54:33.343Z
+date: 2024-07-15T15:13:25.259Z
 tags: readarr, troubleshooting
 editor: markdown
 dateCreated: 2021-06-20T20:06:25.552Z
@@ -48,28 +48,33 @@ dateCreated: 2021-06-20T20:06:25.552Z
     - [Usenet download misses import](#usenet-download-misses-import)
     - [Download client clearing items](#download-client-clearing-items)
     - [Download cannot be matched to a library item](#download-cannot-be-matched-to-a-library-item)
-    - [Connection Timed Out](#connection-timed-out)
+    - [The underlying connection was closed: An unexpected error occurred on a send](#the-underlying-connection-was-closed-an-unexpected-error-occurred-on-a-send)
+    - [The request timed out](#the-request-timed-out)
   - [Problem Not Listed](#problem-not-listed)
 - [Searches Indexers and Trackers](#searches-indexers-and-trackers)
   - [Turn logging up to trace](#turn-logging-up-to-trace)
   - [Testing an Indexer or Tracker](#testing-an-indexer-or-tracker)
   - [Testing a Search](#testing-a-search)
   - [Common Problems](#common-problems-1)
+    - [Unable to Load Search Results](#unable-to-load-search-results)
     - [Media is Unmonitored](#media-is-unmonitored)
     - [Wrong categories](#wrong-categories)
     - [Wrong results](#wrong-results)
-    - [Query Successful - No Results returned](#query-successful-no-results-returned)
+    - [Query Successful - No Results returned](#query-successful---no-results-returned)
     - [Missing Results](#missing-results)
     - [Certificate validation](#certificate-validation)
     - [Hitting rate limits](#hitting-rate-limits)
     - [IP Ban](#ip-ban)
     - [Using the Jackett /all endpoint](#using-the-jackett-all-endpoint)
     - [Using NZBHydra2 as a single entry](#using-nzbhydra2-as-a-single-entry)
+    - [Book imported with incorrect edition](#book-imported-with-incorrect-edition)
     - [Problem Not Listed](#problem-not-listed-1)
   - [Errors](#errors)
-    - [The underlying connection was closed: An unexpected error occurred on a send](#the-underlying-connection-was-closed-an-unexpected-error-occurred-on-a-send)
-    - [The request timed out](#the-request-timed-out)
+    - [The underlying connection was closed: An unexpected error occurred on a send](#the-underlying-connection-was-closed-an-unexpected-error-occurred-on-a-send-1)
+    - [The request timed out](#the-request-timed-out-1)
+    - [Invalid Response Received from Metadata API](#invalid-response-received-from-metadata-api)
     - [Problem Not Listed](#problem-not-listed-2)
+  - [Metadata API Issues](#metadata-api-issues)
 
 # Asking for Help
 
@@ -86,6 +91,7 @@ The more we know, the easier it is to help you.
 # Logging and Log Files
 
 It is likely beneficial to also review the Common Troubleshooting problems:
+
 - [Downloads and Importing Common Problems](#common-problems)
 - [Searching Indexers and Trackers Common Problems](#common-problems-1)
 {.links-list}
@@ -109,6 +115,7 @@ To provide good and useful logs for sharing:
 6. Use [Gist](https://gist.github.com/), [0bin (**Be sure to disable colorization**)](https://0bin.net/), [PrivateBin](https://privatebin.net/), [Notifiarr PrivateBin](http://logs.notifiarr.com/), [Hastebin](https://hastebin.com/), [Ubuntu's Pastebin](https://pastebin.ubuntu.com/), or similar sites - excluding those noted to avoid below - to share the copied logs from above
 
 **Warnings:**
+
 - **Do not use [pastebin.com](https://pastebin.com) as their filters have a tendency to block the logs.
 - Do not use [pastebin.pl](https://pastebin.pl) as their site is frequently not accessible.
 - Do not use [JustPasteIt](https://justpaste.it/) as their site does not facilitate reviewing logs.
@@ -118,6 +125,7 @@ To provide good and useful logs for sharing:
 - Do not share console output, docker container output, or anything other than the application logs specified
 
 **Important Note:**
+
 - When using [0bin](https://0bin.net/), be sure to disable colorization and do not burn after reading.
 - Alternatively If you're looking for a specific entry in an old log file but aren't sure which one you can use N++. You can use the Notepad++ "Find in Files" function to search old log files as needed.
 - **Unix Only:** Alternatively If you're looking for a specific entry in an old log file but aren't sure which one you can use grep. For example if you want to find information about the movie/show/book/song/indexer "Shooter" you can run the following command `grep -inr -C 100 -e 'Shooter' /path/to/logs/*.trace*.txt` If your [Appdata Directory](/readarr/appdata-directory) is in your home folder then you'd run: `grep -inr -C 100 -e 'Shooter' /home/$User/.config/logs/*.trace*.txt`
@@ -303,7 +311,7 @@ Thus `/volume3/data` does not exist within Readarr's container or is not accessi
   - Sync at a lower, common folder that contains both incomplete and complete.
   - Sync to a location that is on the same file system locally as your library and looks like it (docker and network shares make this easy to misconfigure)
   - You want to sync the incomplete and complete so that when the torrent client does the move, that is reflected locally and all the files are already "there" (even if they're still downloading). Then you want to use hard links because even if it imports before its done, they'll still finish.
-  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hardlink possible means that is still okay.
+  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hard link possible means that is still okay.
   - (Optional - if applicable and/or required (e.g. remote usenet client)) Configure a custom script to run on import/download/upgrade to remove the remote file
 - Alternatively a remote mount rather than a remote sync setup is significantly less complicated to configure, but typically slowly.
   - Mount your remote storage with sshfs or another network file system protocol
@@ -475,6 +483,10 @@ Full section of Trace Log for a Manual Search Needed
 
 Below are some common problems.
 
+### Unable to Load Search Results
+
+Most likely you're using a reverse proxy and you reverse proxy timeout is set too short before \*Arr has completed the search query. Increase the timeout and try again.
+
 ### Media is Unmonitored
 
 The book(s) is(are) not monitored.
@@ -509,8 +521,6 @@ You’ll be connecting to most indexers/trackers via https, so you’ll need tha
 
 If you run your through a VPN or proxy, you may be competing with 10s or 100s or 1000s of other people all trying to use services like , theXEM ,and/or your indexers and trackers. Rate limiting and DDOS protection are often done by IP address and your VPN/proxy exit point is *one* IP address. Unless you’re in a repressive country like China, Australia or South Africa you don’t need to VPN/proxy .
 
-Rarbg has a tendency to have some sort of rate limiting within their API and displays as responding with no results.
-
 ### IP Ban
 
 Similarly to rate limits, certain indexers - such as Nyaa - may outright ban an IP address. This is typically semi-permanent and the solution is to  to get a new IP from your ISP or VPN provider.
@@ -534,6 +544,10 @@ Adding each indexer separately It allows for fine tuning of categories on a per 
 ### Using NZBHydra2 as a single entry
 
 Using NZBHydra2 as a single indexer entry (i.e. 1 NZBHydra2 Entry in Readarr for many indexers in NZBHydra2) rather than multiple (i.e. many NZBHydra2 entries in Readarr for many indexers in NZBHydra2) has the same problems as noted above with Jackett's `/all` endpoint.
+
+### Book Imported With Incorrect Edition
+
+If a book imports with an incorrect edition, or you need to change that edition, you will need to move that book file *entirely* out of Readarr's root folder, then use Wanted/Manual Import to re-import it, choosing the correct edition using the drop-down at the bottom of the screen. This is the only working way to change the edition of a book after it's been imported.
 
 ### Problem Not Listed
 
@@ -572,3 +586,13 @@ This can also be caused by:
 ### Problem Not Listed
 
 You can also review some common permissions and networking troubleshooting commands [in our guide](/permissions-and-networking). Otherwise please discuss with the support team on discord. If this is something that may be a common problem, please suggest adding it to the wiki.
+
+## Metadata API Issues
+
+### Invalid Response Received from Metadata API
+
+This indicates that there is a problem with the metadata server. If the error is a 521 error, then it means the Cloudflare gateway has an issue reaching the metadata server. Either the metadata server as a whole is down temporarily, or that specific piece of it is down.
+
+Sometimes you can still add an author by the `author:authorID` search method when you get this error.
+
+See [Readarr Status](/readarr/status) for more information.

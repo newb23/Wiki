@@ -2,7 +2,7 @@
 title: Lidarr FAQ
 description: 
 published: true
-date: 2023-10-30T02:08:46.401Z
+date: 2025-01-04T17:45:57.629Z
 tags: lidarr, needs-love, faq
 editor: markdown
 dateCreated: 2021-06-14T14:33:41.344Z
@@ -14,6 +14,8 @@ dateCreated: 2021-06-14T14:33:41.344Z
   - [How does Lidarr work?](#how-does-lidarr-work)
   - [How does Lidarr find releases?](#how-does-lidarr-find-releases)
   - [Forced Authentication](#forced-authentication)
+    - [Authentication Method](#authentication-method)
+    - [Authentication Required](#authentication-required)
   - [How are possible downloads compared?](#how-are-possible-downloads-compared)
   - [Lidarr stopped working after updating to Ubuntu 22.04](#lidarr-stopped-working-after-updating-to-ubuntu-2204)
   - [Why can I not add a new release or artist to Lidarr?](#why-can-i-not-add-a-new-release-or-artist-to-lidarr)
@@ -29,6 +31,8 @@ dateCreated: 2021-06-14T14:33:41.344Z
   - [How can I get missing album images? (Cover Art)](#how-can-i-get-missing-album-images-cover-art)
   - [I'm having trouble importing my artists, what could it be?](#im-having-trouble-importing-my-artists-what-could-it-be)
   - [How can I rename my artist folders?](#how-can-i-rename-my-artist-folders)
+  - [Why Does Lidarr Keep Trying To Rename the Same Folders?](#why-does-lidarr-keep-trying-to-rename-the-same-folders)
+  - [Why Can’t I Access a Folder in Windows After Lidarr Rename](#why-cant-i-access-a-folder-in-windows-after-lidarr-rename)
   - [How can I mass delete artists from the wanted list?](#how-can-i-mass-delete-artists-from-the-wanted-list)
   - [Why doesn't Lidarr work behind a reverse proxy](#why-doesnt-lidarr-work-behind-a-reverse-proxy)
   - [How do I update Lidarr?](#how-do-i-update-lidarr)
@@ -58,6 +62,7 @@ dateCreated: 2021-06-14T14:33:41.344Z
   - [How do I stop the browser from launching on startup?](#how-do-i-stop-the-browser-from-launching-on-startup)
   - [Weird UI Issues](#weird-ui-issues)
   - [VPNs, Jackett, and the \*ARRs](#vpns-jackett-and-the-arrs)
+    - [Use of a VPN](#use-of-a-vpn)
   - [Jackett's /all Endpoint](#jacketts-all-endpoint)
     - [Jackett /All Solutions](#jackett-all-solutions)
   - [Why are there two files? | Why is there a file left in downloads?](#why-are-there-two-files--why-is-there-a-file-left-in-downloads)
@@ -81,6 +86,7 @@ dateCreated: 2021-06-14T14:33:41.344Z
 If Lidarr is exposed so that the UI can be accessed from outside your local network then you should have some form of authentication method enabled in order to access the UI. This is also increasingly required by Trackers and Indexers.
 
 As of Lidarr v2, Authentication is Mandatory.
+
 - `AuthenticationType` and `AuthenticationMethod` are mandatory required attributes in the configuration file.
 
 ### Authentication Method
@@ -122,7 +128,7 @@ As of Lidarr v2, Authentication is Mandatory.
 
 ## Why can I not add a new release or artist to Lidarr?
 
-- The release is likely `unknown` type on MusicBrainz
+- Please see the [I cannot find a release in Lidarr but it is on MusicBrainz](#i-cannot-find-a release-in-Lidarr-but-it-is-on-musicbrainz) entry.
 
 ## Why can I not add a various artists album?
 
@@ -130,19 +136,19 @@ As of Lidarr v2, Authentication is Mandatory.
 
 ## Why does Lidarr only show studio albums, How do I find singles or EPs?
 
-- Lidarr defaults to only bringing in studio albums for each artist. However, you can expand the album types per an artist, or for your entire library by utilizing Metadata Profiles.
+- Lidarr defaults to only bringing in studio albums for each artist. However, you can expand the album types per an artist or for your entire library by utilizing Metadata Profiles.
 
 ## Can I add just an album?
 
-- Not at the moment.
+- Yes, but when adding an album you also be prompted to add the artist. Changing both monitoring options to `none` will add only the current album.
 
 ## Can I download single tracks?
 
-- Lidarr works by searching for and downloading full releases, therefore individual tracks cannot be downloaded unless they were released as a single by the artist.
+- Unlikely, Lidarr works by searching for and downloading full releases, therefore individual tracks cannot be downloaded unless they were released as a single by the artist.
 
 ## Why doesn't artist X show up in search?
 
-- Search is still a work in progress. Artists that do not show up in search may be added by searching for `lidarr:mbid` where `mbid` is the Musicbrainz ID of the artist.
+- Artists that do not show up in search may be added by searching for `lidarr:mbid` where `mbid` is the Musicbrainz ID of the artist.
 
 ## Lidarr matched an album with too many tracks. How can I change the Album to the correct Release?
 
@@ -150,15 +156,22 @@ As of Lidarr v2, Authentication is Mandatory.
 
 ## I cannot find a release in Lidarr but it is on MusicBrainz
 
-- This is likely due to the release having an `unknown` release status. Update MusicBrainz.
+- This is likely due to the release having an `unknown` release status. Update MusicBrainz - typically to `official`
+- Other statuses may be available based on your metadata profile
+  - Official
+  - Promotion
+  - Bootleg
+  - Pseudo-Release
 
 ## How often do Lidarr's and MusicBrainz databases sync?
 
-- Every hour at 5 after the hour
+- Every hour at 5 after the hour.
+- Note that some Metadata server caching issues exist and require manual cache busting by a Servarr Team Member or Servarr Donatarr.
 
 ## How can I add missing artist images?
 
 - Add art to fanart.tv and wait ~7+ days for it to clear through the cache. Then refresh the metadata.
+- Fallback logic for TheAudioDB exists as a source as well.
 
 ## How can I get missing album images? (Cover Art)
 
@@ -176,10 +189,27 @@ As of Lidarr v2, Authentication is Mandatory.
 {.is-info}
 
 1. Library
-1. Mass Editor
+1. Click on "Select Artists"
 1. Select what artists need their folder renamed
+1. Click on "Edit"
 1. Change Root Folder to the same Root Folder that the artists currently exist in
-1. Select "Yes move files"
+1. Select "Yes, move the files"
+
+## Why Does Lidarr Keep Trying To Rename the Same Folders?
+
+- During rename operations, Lidarr will attempt to rename folders to the correct case. On Windows, this operation will appear to succeed but no changes are made. The current solution is to manually correct these paths.
+
+## Why Can’t I Access a Folder in Windows After Lidarr Rename
+
+Newer builds of Lidarr support limiting the tag length to an arbitrary integer. The tag is truncated and a three periods are added to the end of the folder name. [Windows](https://learn.microsoft.com/windows/win32/fileio/naming-a-file#naming-conventions) does support some characters at the end of folder names, and the folder will become inaccessible.
+
+> Do not end a file or directory name with a space or a period. Although the underlying file system may support such names, the Windows shell and user interface does not.
+
+When this occurs, you must rename the folder using WSL to make it accessible again.
+
+```console
+mv <foldername...> <foldername>
+```
 
 ## How can I mass delete artists from the wanted list?
 
@@ -207,9 +237,9 @@ As of Lidarr v2, Authentication is Mandatory.
 
 - `master` - ![Current Master/Stable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Master&query=%24%5B0%5D.version&url=https://lidarr.servarr.com/v1/update/master/changes) - (Default/Stable): It has been tested by users on the develop and nightly branches and it’s not known to have any major issues. This version will receive updates approximately monthly. On GitHub, this is the `master` branch.
 
-- `develop` - ![Current Develop/Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Develop&query=%24%5B0%5D.version&url=https://lidarr.servarr.com/v1/update/develop/changes) - (Beta): This is the testing edge. Released after tested in nightly to ensure no immediate issues. New features and bug fixes released here first after nightly. It can be considered semi-stable, but is still `beta`. This version will receive updates either weekly or biweekly depending on development.
+- `develop` - ![Current Develop/Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Develop&query=%24%5B0%5D.version&url=https://lidarr.servarr.com/v1/update/develop/changes) - (Beta): This is the testing edge. Released after tested in nightly to ensure no immediate issues. New features and bug fixes released here first after nightly. It can be considered semi-stable, but is still `beta`. This version will receive updates either weekly or biweekly depending on development and will be tagged as `pre-release`.
 
-> **Warning: You may not be able to go back to `master` after switching to this branch.** On GitHub, this is a snapshot of the `develop` branch at a specific point in time.
+> **Warning: You may not be able to go back to `master` after switching to this branch.** On GitHub, this is a snapshot of the `develop` branch at a specific point in time and is tagged as pre-release.
 {.is-warning}
 
 - `nightly` - ![Current Nightly/Unstable](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Nightly&query=%24%5B0%5D.version&url=https://lidarr.servarr.com/v1/update/nightly/changes) - (Alpha/Unstable): This is the bleeding edge. It is released as soon as code is committed and passes all automated tests. This build may have not been used by us or other users yet. There is no guarantee that it will even run in some cases. This branch is only recommended for advanced users. Issues and self investigation are expected in this branch.  ***Use this branch only if you know what you are doing and are willing to get your hands dirty to recover a failed update.*** This version is updated immediately.
@@ -220,9 +250,9 @@ As of Lidarr v2, Authentication is Mandatory.
 - Note: If your install is through Docker append `:release`, `:latest`, `:testing`, or `:develop` to the end of your container tag depending on who makes your builds. Please note that `nightly` branches are intentionally not listed below.
 
 |                                                                    | `master` (stable) ![Current Master/Latest](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Master&query=%24%5B0%5D.version&url=https://lidarr.servarr.com/v1/update/master/changes) | `develop` (beta) ![Current Develop/Beta](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Develop&query=%24%5B0%5D.version&url=https://lidarr.servarr.com/v1/update/develop/changes) | `nightly` (alpha) ![Current Nightly/Alpha](https://img.shields.io/badge/dynamic/json?color=f5f5f5&style=flat-square&label=Nightly&query=%24%5B0%5D.version&url=https://lidarr.servarr.com/v1/update/nightly/changes) |
-| ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [hotio](https://hotio.dev/containers/lidarr)                       | `release`                                                                                                                                                                                                             | `testing`                                                                                                                                                                                                           | `nightly`                                                                                                                                                                                                             |
-| [LinuxServer.io](https://docs.linuxserver.io/images/docker-lidarr) | `latest`                                                                                                                                                                                                              | `develop`                                                                                                                                                                                                           | `nightly`                                                                                                                                                                                                             |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [hotio](https://hotio.dev/containers/lidarr)                       | `release`                                                                                                                                                                                                          | `testing`                                                                                                                                                                                                          | `nightly`                                                                                                                                                                                                            |
+| [LinuxServer.io](https://docs.linuxserver.io/images/docker-lidarr) | `latest`                                                                                                                                                                                                           | `develop`                                                                                                                                                                                                          | `nightly`                                                                                                                                                                                                            |
 
 ### Can I update Lidarr inside my Docker container?
 
@@ -440,7 +470,7 @@ Depending on your OS, there are multiple possible ways.
 
 ## VPNs, Jackett, and the \*ARRs
 
-- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
+- Unless you're in a repressive country like China, Australia or South Africa, your torrent client is typically the only thing that needs to be behind a VPN. If you're in a repressive country noted above it is likely your connection to your trackers needs to be VPN'd as well - in other words Jackett behind a VPN or Prowlarr using an Indexer Proxy. Other *Arr apps not connecting to trackers should not be behind a VPN.. Because the VPN endpoint is shared by many users, you can and will experience rate limiting, DDOS protection, and ip bans from various services each software uses.
 - In other words, putting the  \*Arrs (Lidarr, Prowlarr, Radarr, Readarr, and Lidarr) behind a VPN can and will make the applications unusable in some cases due to the services not being accessible.
 
 > **To be clear it is not a matter if VPNs will cause issues with the \*Arrs, but when: image providers will block you and cloudflare is in front of most of \*Arr servers (updates, metadata, etc.) and liable to block you too**
@@ -485,10 +515,10 @@ This is expected. With a setup that supports [hardlinks](https://trash-guides.in
 
 1. Lidarr will send a download request to your client, and associate it with a label or category name that you have configured in the download client settings. Examples: movies, tv, series, music, etc.
 1. Lidarr will monitor your download clients active downloads that use that category name. This monitoring occurs via your download client's API.
-1. Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within under the specific download client). When files are imported to your media folder will hardlink the file if supported by your setup or copy if not hardlinks are not supported.
+1. Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within under the specific download client). When files are imported to your media folder will hardlinkthe file if supported by your setup or copy if not hard links are not supported.
 1. If the "Completed Download Handling - Remove Completed" option is enabled in Lidarr's settings, Lidarr will delete the original file and torrent from your download client, but only if the download client reports that seeding is complete and torrent is stopped (i.e. paused). See [TRaSH's Download Client Guides](https://trash-guides.info/Downloaders/) for how to configure your download client optimally.
 
-> Hardlinks are enabled by default. [A hardlink will not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hardlink creation fails or your setup does not support hardlinks then will fall back and copy the file.
+> Hard links are enabled by default. [A hard link will not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hard link creation fails or your setup does not support hard links then will fall back and copy the file.
 {.is-info}
 
 ## I keep getting warnings from my cloud storage about API limits

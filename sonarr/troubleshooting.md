@@ -2,105 +2,28 @@
 title: Sonarr Troubleshooting
 description: 
 published: true
-date: 2023-07-24T19:54:54.368Z
+date: 2024-03-07T06:02:38.692Z
 tags: sonarr, troubleshooting
 editor: markdown
 dateCreated: 2021-06-20T19:13:01.108Z
 ---
 
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [Asking for Help](#asking-for-help)
-- [Logging and Log Files](#logging-and-log-files)
-  - [Standard Logs Location](#standard-logs-location)
-  - [Update Logs Location](#update-logs-location)
-  - [Sharing Logs](#sharing-logs)
-  - [Trace/Debug Logs](#tracedebug-logs)
-  - [Clearing Logs](#clearing-logs)
-- [Multiple Log Files](#multiple-log-files)
-- [Recovering from a Failed Update](#recovering-from-a-failed-update)
-  - [Determine the issue](#determine-the-issue)
-    - [Migration Issue](#migration-issue)
-    - [Permission Issue](#permission-issue)
-  - [Resolving the issue](#resolving-the-issue)
-    - [Permissions Issues](#permissions-issues)
-    - [Manually upgrading](#manually-upgrading)
-- [Downloads and Importing](#downloads-and-importing)
-  - [Testing the Download Client](#testing-the-download-client)
-  - [Testing a Download](#testing-a-download)
-  - [Testing an Import](#testing-an-import)
-  - [Common Problems](#common-problems)
-    - [One or More Episodes expected in the release were not imported or missing](#one-or-more-episodes-expected-in-the-release-were-not-imported-or-missing)
-    - [Using Sonarr v2](#using-sonarr-v2)
-    - [Download Client's WebUI is not enabled](#download-clients-webui-is-not-enabled)
-    - [SSL in use and incorrectly configured](#ssl-in-use-and-incorrectly-configured)
-    - [Can’t see share on Windows](#cant-see-share-on-windows)
-    - [Mapped network drives are not reliable](#mapped-network-drives-are-not-reliable)
-    - [Docker and user, group, ownership, permissions and paths](#docker-and-user-group-ownership-permissions-and-paths)
-    - [Remote Path Mapping](#remote-path-mapping)
-      - [Remote Mount or Remote Sync (Syncthing)](#remote-mount-or-remote-sync-syncthing)
-    - [Permissions on the Library Folder](#permissions-on-the-library-folder)
-    - [Permissions on the Downloads Folder](#permissions-on-the-downloads-folder)
-    - [Download folder and library folder not different folders](#download-folder-and-library-folder-not-different-folders)
-    - [Incorrect category](#incorrect-category)
-    - [Packed torrents](#packed-torrents)
-    - [Repeated downloads](#repeated-downloads)
-    - [Usenet download misses import](#usenet-download-misses-import)
-    - [Download client clearing items](#download-client-clearing-items)
-    - [Download cannot be matched to a library item](#download-cannot-be-matched-to-a-library-item)
-      - [Found matching series via grab history, but series was matched by series ID. Automatic import is not possible](#found-matching-series-via-grab-history-but-series-was-matched-by-series-id-automatic-import-is-not-possible)
-    - [Episode Name is TBA](#episode-name-is-tba)
-    - [Connection Timed Out](#connection-timed-out)
-  - [Problem Not Listed](#problem-not-listed)
-- [Searches Indexers and Trackers](#searches-indexers-and-trackers)
-  - [Turn logging up to trace](#turn-logging-up-to-trace)
-  - [Testing an Indexer or Tracker](#testing-an-indexer-or-tracker)
-  - [Testing a Search](#testing-a-search)
-  - [Common Problems](#common-problems-1)
-    - [Indexers not being Searched](#indexers-not-being-searched)
-    - [Poorly Named Releases](#poorly-named-releases)
-    - [Tracker needs RawSearch Caps](#tracker-needs-rawsearch-caps)
-    - [Series needs an alias](#series-needs-an-alias)
-    - [Series needs an XEM Mapping](#series-needs-an-xem-mapping)
-    - [Wrong Series Type](#wrong-series-type)
-      - [Daily](#daily)
-      - [Standard](#standard)
-      - [Anime](#anime)
-    - [Media is Unmonitored](#media-is-unmonitored)
-    - [Query Successful - No Results Returned](#query-successful-no-results-returned)
-    - [Wrong Categories](#wrong-categories)
-    - [Wrong Results](#wrong-results)
-    - [Missing Results](#missing-results)
-    - [Certificate validation](#certificate-validation)
-    - [Hitting rate limits](#hitting-rate-limits)
-    - [IP Ban](#ip-ban)
-    - [Using the Jackett /all endpoint](#using-the-jackett-all-endpoint)
-    - [Using NZBHydra2 as a single entry](#using-nzbhydra2-as-a-single-entry)
-    - [Indexer not being searched](#indexer-not-being-searched)
-    - [Jackett manual search finding more results](#jackett-manual-search-finding-more-results)
-    - [Release Profiles not being respected](#release-profiles-not-being-respected)
-    - [Problem Not Listed](#problem-not-listed-1)
-  - [Errors](#errors)
-    - [The underlying connection was closed: An unexpected error occurred on a send](#the-underlying-connection-was-closed-an-unexpected-error-occurred-on-a-send)
-    - [The request timed out](#the-request-timed-out)
-    - [Problem Not Listed](#problem-not-listed-2)
-
 # Asking for Help
 
-Do you need help? That's okay, everyone needs help sometimes. You can get real time help via chat on
+Do you need help? That's okay, everyone needs help sometimes. You can get help on
 
 - [<i class="fab fa-discord"></i>&emsp;Discord *Official Sonarr Discord*](https://discord.sonarr.tv/)
-- [<i class="fab fa-reddit"></i>&emsp;Reddit *Official Sonarr Subreddit*](https://reddit.com/r/sonarr)
+- [<i class="fab fa-reddit"></i>&emsp;Reddit *Official Sonarr Forums*](https://forums.sonarr.tv/)
 {.links-list}
 
-But before you go there and post, be sure your request for help is the best it can be. Clearly describe the problem and briefly describe your setup, including things like your OS/distribution, version of .net/Mono, version of Sonarr, download client and its version. **If you are using [Docker](https://www.docker.com/) please run through [Docker Guide](/docker-guide) first as that will solve common and frequent path/permissions issues. Otherwise please have a [docker compose](/docker-guide#docker-compose) handy. [How to Generate a Docker Compose](https://trash-guides.info/compose)** Tell us about what you've tried already, what you've looked at. Use the [Logging and Log Files section](#logging-and-log-files) to turn your logging up to trace, recreate the issue, pastebin the relevant context and include a link to it in your post. Maybe even include some screen shots to highlight the issue.
+But before you go there and post, be sure your request for help is the best it can be. Clearly describe the problem and briefly describe your setup, including things like your OS/distribution, version of .NET, version of Sonarr, download client and its version. **If you are using [Docker](https://www.docker.com/) please run through [Docker Guide](/docker-guide) first as that will solve common and frequent path/permissions issues. Otherwise please have a [docker compose](/docker-guide#docker-compose) handy. [How to Generate a Docker Compose](https://trash-guides.info/compose)** Tell us about what you've tried already, what you've looked at. Use the [Logging and Log Files section](#logging-and-log-files) to turn your logging up to trace, recreate the issue, pastebin the relevant context and include a link to it in your post. Maybe even include some screen shots to highlight the issue.
 
 The more we know, the easier it is to help you.
 
 # Logging and Log Files
 
 It is likely beneficial to also review the Common Troubleshooting problems:
+
 - [Downloads and Importing Common Problems](#common-problems)
 - [Searching Indexers and Trackers Common Problems](#common-problems-1)
 {.links-list}
@@ -124,7 +47,8 @@ To provide good and useful logs for sharing:
 6. Use [Gist](https://gist.github.com/), [0bin (**Be sure to disable colorization**)](https://0bin.net/), [PrivateBin](https://privatebin.net/), [Notifiarr PrivateBin](http://logs.notifiarr.com/), [Hastebin](https://hastebin.com/), [Ubuntu's Pastebin](https://pastebin.ubuntu.com/), or similar sites - excluding those noted to avoid below - to share the copied logs from above
 
 **Warnings:**
-- **Do not use [pastebin.com](https://pastebin.com) as their filters have a tendency to block the logs.
+
+- **Do not use [pastebin.com](https://pastebin.com) as their filters have a tendency to block the logs.**
 - Do not use [pastebin.pl](https://pastebin.pl) as their site is frequently not accessible.
 - Do not use [JustPasteIt](https://justpaste.it/) as their site does not facilitate reviewing logs.
 - Do not upload your log as a file
@@ -133,6 +57,7 @@ To provide good and useful logs for sharing:
 - Do not share console output, docker container output, or anything other than the application logs specified
 
 **Important Note:**
+
 - When using [0bin](https://0bin.net/), be sure to disable colorization and do not burn after reading.
 
 - Alternatively If you're looking for a specific entry in an old log file but aren't sure which one you can use N++. You can use the Notepad++ "Find in Files" function to search old log files as needed.
@@ -273,7 +198,11 @@ Below are some common problems.
 
 ### Using Sonarr v2
 
-Sonarr v2 has been end of life and not supported since 3/2021. It is not compatible with qBittorrent v4.3.0 or newer. Upgrade to Sonarr v3
+Sonarr v2 has been end of life and not supported since 3/2021. It is not compatible with qBittorrent v4.3.0 or newer. Upgrade to Sonarr v4
+
+### Using Sonarr v3
+
+Sonarr v3 has been end of life since 1/2024. Upgrade to Sonarr v4.
 
 ### Download Client's WebUI is not enabled
 
@@ -285,7 +214,7 @@ Ensure SSL encryption is not turned on if you're using both your instance and yo
 
 ### Can’t see share on Windows
 
-The default user for a Windows service is `LocalService` which typically doesn’t have access to your shares. Edit the service and set it up to run as your own user, see the FAQ entry [why can’t see my files on a remote server](/sonarr/faq#why-cant-i-see-my-files-on-a-remote-server) for details.
+The default user for a Windows service is `LocalService` which typically doesn’t have access to your shares. Edit the service and set it up to run as your own user, see the FAQ entry [why can’t Sonarr see my files on a remote server](/sonarr/faq#why-can-sonarr-not-see-my-files-on-a-remote-server) for details.
 
 ### Mapped network drives are not reliable
 
@@ -302,7 +231,7 @@ If you have Sonarr in Docker and the Download Client in non-Docker (or vice vers
 Logs will look like
 
 ```none
-2022-02-03 14:03:54.3|Error|DownloadedEpisodesImportService|Import failed, path does not exist or is not accessible by Sonarr: /volume3/data/torrents/tv/The.Orville.S03E08.1080p.WEB.H264-GGEZ[rarbg]. Ensure the path exists and the user running Sonarr has the correct permissions to access this file/folder
+2022-02-03 14:03:54.3|Error|DownloadedEpisodesImportService|Import failed, path does not exist or is not accessible by Sonarr: /volume3/data/torrents/tv/The.Orville.S03E08.1080p.WEB.H264-GGEZ[eztv]. Ensure the path exists and the user running Sonarr has the correct permissions to access this file/folder
 ```
 
 Thus `/volume3/data` does not exist within Sonarr's container or is not accessible.
@@ -323,7 +252,7 @@ Thus `/volume3/data` does not exist within Sonarr's container or is not accessib
   - Sync at a lower, common folder that contains both incomplete and complete.
   - Sync to a location that is on the same file system locally as your library and looks like it (docker and network shares make this easy to misconfigure)
   - You want to sync the incomplete and complete so that when the torrent client does the move, that is reflected locally and all the files are already "there" (even if they're still downloading). Then you want to use hard links because even if it imports before its done, they'll still finish.
-  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hardlink possible means that is still okay.
+  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hard link possible means that is still okay.
   - (Optional - if applicable and/or required (e.g. remote usenet client)) Configure a custom script to run on import/download/upgrade to remove the remote file
 - Alternatively a remote mount rather than a remote sync setup is significantly less complicated to configure, but typically slowly.
   - Mount your remote storage with sshfs or another network file system protocol
@@ -335,7 +264,7 @@ Thus `/volume3/data` does not exist within Sonarr's container or is not accessib
 Logs will look like
 
 ```none
-2022-02-03 14:03:54.3|Error|DownloadedEpisodesImportService|Import failed, path does not exist or is not accessible by Sonarr: /volume3/data/tv/The Orville/Season 03/The.Orville.S03E08.1080p.WEB.H264-GGEZ[rarbg]. Ensure the path exists and the user running Sonarr has the correct permissions to access this file/folder
+2022-02-03 14:03:54.3|Error|DownloadedEpisodesImportService|Import failed, path does not exist or is not accessible by Sonarr: /volume3/data/tv/The Orville/Season 03/The.Orville.S03E08.1080p.WEB.H264-GGEZ[eztv]. Ensure the path exists and the user running Sonarr has the correct permissions to access this file/folder
 ```
 
 Don’t forget to check permissions and ownership of the *destination*. It is easy to get fixated on the download’s ownership and permissions and that is *usually* the cause of permissions related issues, but it *could* be the destination as well. Check that the destination folder(s) exist. Check that a destination *file* doesn’t already exist or can’t be deleted or moved to recycle bin. Check that ownership and permissions allow the downloaded file to be copied, hard linked or moved. The user or group that runs as needs to be able to read and write the root folder.
@@ -365,7 +294,7 @@ or
 [v3.0.6.1342] System.UnauthorizedAccessException: Access to the path '/volume1/THE VOID/Downloads/Usenet Downloads/complete/Resident.Alien.S02E02.720p.WEB.H264-CAKES' is denied.
 ```
 
-Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that Sonarr runs as needs to be able to read and write the downloads files.
+Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist - and if docker that the mounts are aligned and consistent. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that Sonarr runs as needs to be able to read and write the downloads files.
 
 - For Windows Users this may be due to running as a service:
   - the Windows Service runs under the 'Local Service' account, by default this account does not have permissions to access your user's home directory unless permissions have been assigned manually. This is particularly relevant when using download clients that are configured to download to your home directory.
@@ -407,7 +336,7 @@ The error by also be seen if there is no valid media file in the folder.
 
 ### Repeated downloads
 
-There are a few causes of repeated downloads, but one is related to the Indexer restriction in Release Profiles. Because the indexer *isn’t* stored with the data, any `preferred word` scores are *zero* for media in your library, *but* during “RSS” and search, they’ll be applied. Similarly for any `must contain` or `must-not` contain the restrictions only apply to that indexer; anything else is fair game. This gets you into a loop where you download the items again and again because it looks like an upgrade, then isn’t, then shows up again and looks like an upgrade, then isn’t. Don’t restrict your release profile to an indexer.
+There are a few causes of repeated downloads, but one is related to Custom Formats. It's possible the release name matches a custom format, but the download files do not. This gets you into a loop where you download the items again and again because it looks like an upgrade, then isn’t, then shows up again and looks like an upgrade, then isn’t. Depending on your custom format you may be able to work around this by including the custom format in your renaming schema. (Enable the Custom Format to be included in renaming & then add Custom Format to you renaming schema)
 
 This may also be due to the fact that the download never actually imports and then is missing from the queue, so a new download is perpetually grabbed and never imported. Please see the various other common problems and troubleshooting steps for this.
 
@@ -470,6 +399,10 @@ This can also be caused by:
 - local DNS issues - Try changing to a different DNS provider
 - local IPv6 issues - typically IPv6 is enabled, but non-functional
 - the use of Privoxy and it being improperly configured
+
+### Download doesn't contain intermediate path
+
+There was no output path reported from your download client for this item.
 
 ## Problem Not Listed
 
@@ -669,6 +602,10 @@ https://nzbgeek.info/geekseek.php?guid=f7e4ac2875b6a1ce45bae91ab19e9699
 
 Below are some common problems that are the solution for almost all issues experienced.
 
+### Unable to Load Search Results
+
+Most likely you're using a reverse proxy and you reverse proxy timeout is set too short before \*Arr has completed the search query. Increase the timeout and try again.
+
 ### Indexers not being Searched
 
 - Logs will look like
@@ -722,7 +659,7 @@ Below are some common problems that are the solution for almost all issues exper
 
 ### Series needs an alias
 
-Releases may be uploaded as `The Series Name`, but TVDB has the series as `Series Name` or similar naming differences. Please see [this FAQ entry](/sonarr/faq#why-cannot-sonarr-import-episode-files-for-series-x-why-cannot-sonarr-find-releases-for-series-x)
+Releases may be uploaded as `The Series Name`, but TVDB has the series as `Series Name` or similar naming differences. This also includes Foreign Titles. Please see [this FAQ entry](/sonarr/faq#why-cant-sonarr-import-episode-files-for-series-x-why-cant-sonarr-find-releases-for-series-x)
 
 ### Series needs an XEM Mapping
 
@@ -816,8 +753,6 @@ You’ll be connecting to most indexers/trackers via https, so you’ll need tha
 
 If you run your through a VPN or proxy, you may be competing with 10s or 100s or 1000s of other people all trying to use services like , theXEM ,and/or your indexers and trackers. Rate limiting and DDOS protection are often done by IP address and your VPN/proxy exit point is *one* IP address. Unless you’re in a repressive country like China, Australia or South Africa you don’t need to VPN/proxy.
 
-Rarbg has a tendency to have some sort of rate limiting within their API and displays as responding with no results.
-
 ### IP Ban
 
 Similarly to rate limits, certain indexers - such as Nyaa - may outright ban an IP address. This is typically semi-permanent and the solution is to  to get a new IP from your ISP or VPN provider.
@@ -851,10 +786,6 @@ Using NZBHydra2 as a single indexer entry (i.e. 1 NZBHydra2 Entry in Sonarr for 
 ### Jackett manual search finding more results
 
 - [See this FAQ entry](/sonarr/faq#jackett-shows-more-results-than-sonarr-when-manually-searching)
-
-### Release Profiles not being respected
-
-There are a few causes why it may appear your profiles are being ignored. The most common one is related to the Indexer restriction in Release Profiles. Because the indexer *isn’t* stored with the data, any `preferred word` scores are *zero* for media in your library, *but* during “RSS” and search, they’ll be applied. Similarly for any `must contain` or `must-not` contain the restrictions only apply to that indexer; anything else is fair game. This may then cause release profiles to appear to be ignored or for upgrade loops to occur.
 
 ### Problem Not Listed
 

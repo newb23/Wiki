@@ -2,10 +2,10 @@
 title: Prowlarr Linux Installation
 description: Linux installation guide for Prowlarr
 published: true
-date: 2023-07-03T20:30:47.519Z
+date: 2024-04-05T19:16:07.117Z
 tags: 
 editor: markdown
-dateCreated: 2023-07-03T20:11:02.991Z
+dateCreated: 2023-07-03T20:11:24.804Z
 ---
 
 # Linux
@@ -22,9 +22,12 @@ If you want an easy life, follow this community provided and maintained `Easy In
 
 **For the official installation instructions that are 'Hands on' follow the [Debian / Ubuntu Hands on Install](#debian-ubuntu-hands-on-install) steps further below.**
 
-[Please see the \*Arr Community Installation Script](/install-script)
+- [\*Arr Community Installation Script](/install-script)
+{.links-list}
 
 ### Debian / Ubuntu Hands on Install
+
+*It is assumed you have a basic knowledge of linux or the ability to google / learn as necessary. Otherwise it is suggested to use an OS you know and understand*
 
 You'll need to install the binaries using the below commands.
 
@@ -45,7 +48,7 @@ sudo apt install curl sqlite3
 > The below instructions are based on the following prerequisites. Change the instructions as needed to suit your specific needs if necessary.
 > \* The user `prowlarr` is created
 > \* You created the directory `/var/lib/prowlarr` and ensured the user `prowlarr` has read/write permissions for it
-{.is-danger}
+{.is-success}
 
 > By continuing below, you acknowledge that you have read and met the above requirements. {.is-warning}
 
@@ -82,7 +85,7 @@ sudo chown prowlarr:prowlarr -R /opt/Prowlarr
 
 - Configure systemd so Prowlarr can autostart at boot.
 
-> The below systemd creation script will use a data directory of `/var/lib/prowlarr`. Ensure it exists or modify it as needed. For the default data directory of `/home/$USER/.config/Prowlarr` simply remove the `-data` argument. Note: that `$USER` is the User Prowlarr runs as and is defined below.
+> The below systemd creation script will use a data directory of `/var/lib/prowlarr`. Ensure the directory exists or modify the path as needed. For the default data directory of `/home/$USER/.config/Prowlarr` simply remove the `-data` argument. Note: that `$USER` is the User Prowlarr runs as and is defined below.
 {.is-danger}
 
 ```shell
@@ -135,6 +138,7 @@ sudo journalctl --since today -u prowlarr
 ### Uninstall
 
 To uninstall and purge:
+
 > Warning: This will destroy your application data. {.is-danger}
 
 ```bash

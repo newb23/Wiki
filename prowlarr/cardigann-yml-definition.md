@@ -12,17 +12,19 @@ dateCreated: 2021-08-14T18:19:59.428Z
 
 - [Table of Contents](#table-of-contents)
 - [Cardigann Versions](#cardigann-versions)
-  - [Supported Versions](#supported-versions)
-    - [V9](#v9-indexers)
-    - [V8](#v8-indexers)
-    - [V7](#v7-indexers)
+  - [Schemas](#schemas)
+    - [Schema Validation](#schema-validation)
+  - [Active Versions](#active-versions)
+    - [V9 Indexers](#v9-indexers)
   - [Depreciated Versions](#depreciated-versions)
-    - [V1](#v1-indexers)
-    - [V2](#v2-indexers)
-    - [V3](#v3-indexers)
-    - [V4](#v4-indexers)
-    - [V5](#v5-indexers)
-    - [V6](#v6-indexers)
+    - [V8 Indexers](#v8-indexers)
+    - [V7 Indexers](#v7-indexers)
+    - [V6 Indexers](#v6-indexers)
+    - [V5 Indexers](#v5-indexers)
+    - [V4 Indexers](#v4-indexers)
+    - [V3 Indexers](#v3-indexers)
+    - [V2 Indexers](#v2-indexers)
+    - [V1 Indexers](#v1-indexers)
 - [General](#general)
 - [Format](#format)
   - [Header](#header)
@@ -37,17 +39,20 @@ dateCreated: 2021-08-14T18:19:59.428Z
     - [Search HTML](#search-html)
     - [Providing the category field with a default value](#providing-the-category-field-with-a-default-value)
     - [Search JSON and XML](#search-json-and-xml)
+    - [Search Row Selectors](#search-row-selectors)
+    - [Search XML](#search-xml)
   - [Download](#download)
     - [Download Block Infohash Example](#download-block-infohash-example)
     - [Download Block "before" Pathselector Example](#download-block-before-pathselector-example)
 - [Template Engine](#template-engine)
-  - [re_replace](#re_replace)
-  - [if ... else ... end](#if--else--end)
-  - [if or/and ... else ... end](#if-orand--else--end)
-  - [if eq/ne ... else ... end](#if-eqne--else--end)
+  - [re\_replace](#re_replace)
+  - [if ... else ... end](#if-else-end)
+  - [if or/and ... else ... end](#if-orand-else-end)
+  - [if eq/ne ... else ... end](#if-eqne-else-end)
   - [join](#join)
   - [range](#range)
-- [Variable Substitution](#variable-substitution)
+  - [range (with indexing)](#range-with-indexing)
+  - [Variable substitution](#variable-substitution)
   - [Variables](#variables)
   - [Config Variables](#config-variables)
   - [Special Variables](#special-variables)
@@ -63,12 +68,14 @@ dateCreated: 2021-08-14T18:19:59.428Z
   - [split](#split)
   - [trim](#trim)
   - [regexp](#regexp)
-  - [re_replace](#re_replace-1)
+  - [re\_replace](#re_replace-1)
+  - [validate](#validate)
   - [dateparse](#dateparse)
   - [timeparse](#timeparse)
   - [timeago](#timeago)
   - [reltime](#reltime)
   - [fuzzytime](#fuzzytime)
+  - [htmldecode](#htmldecode)
   - [urldecode](#urldecode)
   - [urlencode](#urlencode)
   - [validfilename](#validfilename)
@@ -76,7 +83,8 @@ dateCreated: 2021-08-14T18:19:59.428Z
   - [jsonjoinarray](#jsonjoinarray)
   - [hexdump](#hexdump)
   - [strdump](#strdump)
-- [Credit](#credit)
+  - [Proposed changes](#proposed-changes)
+  - [Credit](#credit)
 
 # Cardigann Versions
 
@@ -222,7 +230,7 @@ id: thepiratebay
 name: The Pirate Bay
 
 # [REQUIRED] displayed in the tooltip on the add-indexer page and in the config panel
-description: "Pirate Bay (TPB) is the galaxy’s most resilient Public BitTorrent site"
+description: "Pirate Bay (TPB) is the galaxyâs most resilient Public BitTorrent site"
 
 # [REQUIRED] Language code of the main language used on the tracker
 # See http://www.lingoes.net/en/translator/langcode.htm
@@ -1176,7 +1184,7 @@ The use of `:has()`, `:not()` and `:contains()` are supported by the rows select
 
 This is similar to the JSON method except you code type xml:
 
-```
+```plaintext
       response:
         # [REQUIRED] indicates that an XML response is expected
         type: xml
@@ -1738,7 +1746,7 @@ filters:
   # input: crime, x264, 1080p, (music), pack, comedy, Science_Fiction, dd5.1, Hip/Hop
   - name: validate
     args: "Action, Adventure, Crime, Comedy, Science_Fiction, War"
-  # result: crime, comedy, scence fiction
+  # result: crime, comedy, science fiction
 ```
 
 ## dateparse
@@ -1913,7 +1921,7 @@ Example:
 # get the filename
 text: "{{ .Result.title }}"
 filters:
-  # input: aFile?Name>With<Invalid*Symbols
+  # input: a file?Name>With<Invalid*Symbols
   - name: validfilename
   # result: aFileNameWithInvalidSymbols
 ```
@@ -1927,10 +1935,10 @@ Example:
 ```yaml
 # replace any diacritics
 keywordsfilters:
-  # input: ŠĐĆŽšđčćž
+  # input: Å ÄÄÅ½Å¡ÄÄÄÅ¾
   - name: diacritics
     args: replace
-  # result: SĐCZsđccz
+  # result: SÄCZsÄccz
 ```
 
 ## jsonjoinarray

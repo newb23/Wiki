@@ -2,87 +2,17 @@
 title: Radarr Troubleshooting
 description: Troubleshooting for Radarr including getting log files, search troubleshooting and common problems, and downloading / importing troubleshooting and common problems
 published: true
-date: 2023-11-11T15:43:58.423Z
+date: 2024-04-25T00:04:30.659Z
 tags: radarr, troubleshooting
 editor: markdown
 dateCreated: 2021-08-03T21:05:52.988Z
 ---
-
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [Asking for Help](#asking-for-help)
-- [Logging and Log Files](#logging-and-log-files)
-  - [Standard Logs Location](#standard-logs-location)
-  - [Update Logs Location](#update-logs-location)
-  - [Sharing Logs](#sharing-logs)
-  - [Trace/Debug Logs](#tracedebug-logs)
-  - [Clearing Logs](#clearing-logs)
-- [Multiple Log Files](#multiple-log-files)
-- [Recovering from a Failed Update](#recovering-from-a-failed-update)
-  - [Determine the issue](#determine-the-issue)
-    - [Database disk image is malformed](#database-disk-image-is-malformed)
-    - [Migration Issue](#migration-issue)
-    - [UI Migration Issues](#ui-migration-issues)
-    - [Permission Issue](#permission-issue)
-  - [Resolving the issue](#resolving-the-issue)
-    - [Migration Issues](#migration-issues)
-    - [Permissions Issues](#permissions-issues)
-    - [Manually upgrading](#manually-upgrading)
-- [Downloads and Importing](#downloads-and-importing)
-  - [Testing the Download Client](#testing-the-download-client)
-  - [Testing a Download](#testing-a-download)
-  - [Testing an Import](#testing-an-import)
-  - [Common Problems](#common-problems)
-    - [Download Client's WebUI is not enabled](#download-clients-webui-is-not-enabled)
-    - [SSL in use and incorrectly configured](#ssl-in-use-and-incorrectly-configured)
-    - [Can’t see share on Windows](#cant-see-share-on-windows)
-    - [Mapped network drives are not reliable](#mapped-network-drives-are-not-reliable)
-    - [Docker and user, group, ownership, permissions and paths](#docker-and-user-group-ownership-permissions-and-paths)
-    - [Remote Path Mapping](#remote-path-mapping)
-      - [Remote Mount or Remote Sync (Syncthing)](#remote-mount-or-remote-sync-syncthing)
-    - [Permissions on the Library Folder](#permissions-on-the-library-folder)
-    - [Permissions on the Downloads Folder](#permissions-on-the-downloads-folder)
-    - [Download folder and library folder not different folders](#download-folder-and-library-folder-not-different-folders)
-    - [Incorrect category](#incorrect-category)
-    - [Packed torrents](#packed-torrents)
-    - [Repeated downloads](#repeated-downloads)
-    - [Usenet download misses import](#usenet-download-misses-import)
-    - [Download client clearing items](#download-client-clearing-items)
-    - [Download cannot be matched to a library item](#download-cannot-be-matched-to-a-library-item)
-    - [Connection Timed Out](#connection-timed-out)
-  - [Problem Not Listed](#problem-not-listed)
-- [Searches Indexers and Trackers](#searches-indexers-and-trackers)
-  - [Turn logging up to trace](#turn-logging-up-to-trace)
-  - [Testing an Indexer or Tracker](#testing-an-indexer-or-tracker)
-  - [Testing a Search](#testing-a-search)
-  - [Common Problems](#common-problems-1)
-    - [Tracker needs RawSearch Caps](#tracker-needs-rawsearch-caps)
-    - [Media is Unmonitored](#media-is-unmonitored)
-    - [Wrong categories](#wrong-categories)
-    - [Query Successful - No Results returned](#query-successful-no-results-returned)
-    - [Wrong results](#wrong-results)
-    - [Missing Results](#missing-results)
-    - [Certificate validation](#certificate-validation)
-    - [Hitting rate limits](#hitting-rate-limits)
-    - [IP Ban](#ip-ban)
-    - [Year doesn't match](#year-doesnt-match)
-    - [Missing year](#missing-year)
-    - [Using the Jackett /all endpoint](#using-the-jackett-all-endpoint)
-    - [Using NZBHydra2 as a single entry](#using-nzbhydra2-as-a-single-entry)
-    - [Problem Not Listed](#problem-not-listed-1)
-  - [Errors](#errors)
-    - [The underlying connection was closed: An unexpected error occurred on a send](#the-underlying-connection-was-closed-an-unexpected-error-occurred-on-a-send)
-    - [The request timed out](#the-request-timed-out)
-    - [Invalid response received from TMDB](#invalid-response-received-from-tmdb)
-    - [Problem Not Listed](#problem-not-listed-2)
 
 # Asking for Help
 
 Do you need help? That's okay, everyone needs help sometimes. You can get real time help via chat on
 
 - [<i class="fab fa-discord"></i>&emsp;Discord *Official Radarr Discord*](https://radarr.video/discord)
-- [<i class="fab fa-reddit"></i>&emsp;Reddit *Official Radarr Subreddit*](https://reddit.com/r/radarr)
 {.links-list}
 
 But before you go there and post, be sure your request for help is the best it can be. Clearly describe the problem and briefly describe your setup, including things like your OS/distribution, version of .NET, version of Radarr, download client and its version. **If you are using [Docker](https://www.docker.com/) please run through [Docker Guide](/docker-guide) first as that will solve common and frequent path/permissions issues. Otherwise please have a [docker compose](/docker-guide#docker-compose) handy. [How to Generate a Docker Compose](https://trash-guides.info/compose)** Tell us about what you've tried already, what you've looked at. Use the [Logging and Log Files section](#logging-and-log-files) to turn your logging up to trace, recreate the issue, pastebin the relevant context and include a link to it in your post. Maybe even include some screen shots to highlight the issue.
@@ -92,6 +22,7 @@ The more we know, the easier it is to help you.
 # Logging and Log Files
 
 It is likely beneficial to also review the Common Troubleshooting problems:
+
 - [Downloads and Importing Common Problems](#common-problems)
 - [Searching Indexers and Trackers Common Problems](#common-problems-1)
 {.links-list}
@@ -115,6 +46,7 @@ To provide good and useful logs for sharing:
 6. Use [Gist](https://gist.github.com/), [0bin (**Be sure to disable colorization**)](https://0bin.net/), [PrivateBin](https://privatebin.net/), [Notifiarr PrivateBin](http://logs.notifiarr.com/), [Hastebin](https://hastebin.com/), [Ubuntu's Pastebin](https://pastebin.ubuntu.com/), or similar sites - excluding those noted to avoid below - to share the copied logs from above
 
 **Warnings:**
+
 - **Do not use [pastebin.com](https://pastebin.com) as their filters have a tendency to block the logs.
 - Do not use [pastebin.pl](https://pastebin.pl) as their site is frequently not accessible.
 - Do not use [JustPasteIt](https://justpaste.it/) as their site does not facilitate reviewing logs.
@@ -124,6 +56,7 @@ To provide good and useful logs for sharing:
 - Do not share console output, docker container output, or anything other than the application logs specified
 
 **Important Note:**
+
 - When using [0bin](https://0bin.net/), be sure to disable colorization and do not burn after reading.
 
 - Alternatively If you're looking for a specific entry in an old log file but aren't sure which one you can use N++. You can use the Notepad++ "Find in Files" function to search old log files as needed.
@@ -296,7 +229,7 @@ If you have Radarr in Docker and the Download Client in non-Docker (or vice vers
 Logs will indicate something similar to.
 
 ```none
-2022-02-03 14:03:54.3|Error|DownloadedMovieImportService|Import failed, path does not exist or is not accessible by Radarr: /volume3/data/torrents/movies/The.Orville.2022.1080p.WEB.H264-GGEZ[rarbg]. Ensure the path exists and the user running Radarr has the correct permissions to access this file/folder
+2022-02-03 14:03:54.3|Error|DownloadedMovieImportService|Import failed, path does not exist or is not accessible by Radarr: /volume3/data/torrents/movies/The.Orville.2022.1080p.WEB.H264-GGEZ[eztv]. Ensure the path exists and the user running Radarr has the correct permissions to access this file/folder
 ```
 
 Thus `/volume3/data` does not exist within Radarr's container or is not accessible.
@@ -317,7 +250,7 @@ Thus `/volume3/data` does not exist within Radarr's container or is not accessib
   - Sync at a lower, common folder that contains both incomplete and complete.
   - Sync to a location that is on the same file system locally as your library and looks like it (docker and network shares make this easy to misconfigure)
   - You want to sync the incomplete and complete so that when the torrent client does the move, that is reflected locally and all the files are already "there" (even if they're still downloading). Then you want to use hard links because even if it imports before its done, they'll still finish.
-  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hardlink possible means that is still okay.
+  - This way the whole time it downloads, it is syncing, then torrent client moves to tv sub-folder and sync reflects that. That way downloads are mostly there when declared finished. And even if they're not totally done, having the hard link possible means that is still okay.
   - (Optional - if applicable and/or required (e.g. remote usenet client)) Configure a custom script to run on import/download/upgrade to remove the remote file
 - Alternatively a remote mount rather than a remote sync setup is significantly less complicated to configure, but typically slowly.
   - Mount your remote storage with sshfs or another network file system protocol
@@ -351,7 +284,7 @@ Logs will look like
 2022-02-28 18:51:01.1|Error|DownloadedMovieImportService|Import failed, path does not exist or is not accessible by Radarr: /data/downloads/The.Movie. Ensure the path exists and the user running Radarr has the correct permissions to access this file/folder
 ```
 
-Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that runs as needs to be able to read and write the downloads folder.
+Don’t forget to check permissions and ownership of the *source*. It is easy to get fixated on the destination's ownership and permissions and that is a *possible* cause of permissions related issues, but it *typically* is the source. Check that the source folder(s) exist - and if docker that the mounts are aligned and consistent. Check that ownership and permissions allow the downloaded file to be copied/hardlinked or copy+delete/moved. The user or group that runs as needs to be able to read and write the downloads folder.
 
 - For Windows Users this may be due to running as a service:
   - the Windows Service runs under the 'Local Service' account, by default this account does not have permissions to access your user's home directory unless permissions have been assigned manually. This is particularly relevant when using download clients that are configured to download to your home directory.
@@ -412,11 +345,12 @@ For SABnzbd, this is handled with the History Retention setting.
 For various reasons, releases cannot be parsed once grabbed and sent to the download client. Activity => Options => Show Unknown (this is now enabled by default in recent builds) will display all items not otherwise ignored / already imported within \*Arr's download client category. These will typically need to be manually mapped and imported.
 
 Reasons Include:
-- Movie Name has a `:` on TMDb and TMDb has no alt title with a `-` or with a ` ` replacing the `:`
+
+- Movie Name has a `:` on TMDb and TMDb has no alt title with a `-` or with a `` replacing the `:`
 - File Name is missing the year which is required
 - AKA or weird multiple names; Radarr has limited support for these
 - File Name matches to multiple movies
-- Release Name or Release ID from the indexer dows not match the file name
+- Release Name or Release ID from the indexer does not match the file name
 
 This can also occur if you have a release in your download client but that media item (movie/episode/book/song) does not exist in the application.
 
@@ -445,6 +379,10 @@ This can also be caused by:
 - local DNS issues - Try changing to a different DNS provider
 - local IPv6 issues - typically IPv6 is enabled, but non-functional
 - the use of Privoxy and it being improperly configured
+
+### Download doesn't contain intermediate path
+
+There was no output path reported from your download client for this item.
 
 ## Problem Not Listed
 
@@ -569,6 +507,10 @@ Full section of Trace Log for a Manual Search Needed
 
 Below are some common problems.
 
+### Unable to Load Search Results
+
+Most likely you're using a reverse proxy and you reverse proxy timeout is set too short before \*Arr has completed the search query. Increase the timeout and try again.
+
 ### Tracker needs RawSearch Caps
 
 - Radarr is searching for `Kikis Delivery Service` but your tracker only has results for `Kiki's Delivery Service`
@@ -584,6 +526,10 @@ The movie(s) is(are) not monitored.
 ### Wrong categories
 
 Incorrect categories is probably the most common cause of results showing in manual searches of an indexer/tracker, but *not* in . The indexer/tracker *should* show the category in the search results, which should help you figure out what is missing. If you’re using Jackett or Prowlarr, each tracker has a list of specifically supported categories. Make sure you’re using the correct ones for Categories. Many find it helpful to have the list visible in one browser window while they edit the entry in.
+
+### Indexer needs year removed in search
+
+Some indexers don't return results with the year for the search.  There is an Indexer Advanced option to remove the year from the search string.  Note that year in the release name is still required for Radarr to parse the title.
 
 ### Query Successful - No Results returned
 
@@ -611,8 +557,6 @@ You’ll be connecting to most indexers/trackers via https, so you’ll need tha
 ### Hitting rate limits
 
 If you run your through a VPN or proxy, you may be competing with 10s or 100s or 1000s of other people all trying to use services like , theXEM ,and/or your indexers and trackers. Rate limiting and DDOS protection are often done by IP address and your VPN/proxy exit point is *one* IP address. Unless you’re in a repressive country like China, Australia or South Africa you don’t need to VPN/proxy .
-
-Rarbg has a tendency to have some sort of rate limiting within their API and displays as responding with no results.
 
 ### IP Ban
 

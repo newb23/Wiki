@@ -587,8 +587,7 @@ The timer period can be different for Usenet and Torrents. Each profile can be a
 | `G_DoubleUpload` | ⬆      | Similar to `G_Freeleech`, `G_DoubleUpload` signifies that any amount of data you upload via seeding is counted twice towards your upload quota and ratio. This is very useful, if you want to build up a ratio buffer.      |
 | `PTP_Golden`     | 🌟      | On PassThePopcorn, some torrents are given the *Golden* tag, when they meet certain encoding standards. These are usually the best encodes, with almost no perceptible quality loss. You can learn more on their wiki page. |
 | `PTP_Approved`   | ✔      | On PassThePopcorn, some torrents are approved, when they meet the minimum standards for encoding (e.g., no low bitrates). See their wiki for more information.                                                              |
-| `HDB_Internal`   | 🚪      | Releases on HDBits receive this tag, when the release was uploaded by one of the release groups of HDBits themselves.                                                                                                       |
-| `G_Scene`        | ☠      | Similar to `G_Freeleech`, `G_Freeleech75` signifies that only 25% of the size of this torrent will count towards your download quota or ratio.                                                                              |
+| `G_Scene`        | ☠      | Signifies a release from a SCENE group.                                                                                                                                                                                     |
 | `G_Freeleech75`  | ⇩⬇     | Similar to `G_Freeleech`, `G_Freeleech75` signifies that only 25% of the size of this torrent will count towards your download quota or ratio.                                                                              |
 | `G_Freeleech25`  | ⇩      | Similar to `G_Freeleech`, `G_Freeleech25` signifies that only 75% of the size of this torrent will count towards your download quota or ratio.                                                                              |
 
@@ -604,7 +603,7 @@ The timer period can be different for Usenet and Torrents. Each profile can be a
 - Prefer Indexer Flags - Prioritize releases with special flags. (See Required Flags above)
 - Availability Delay - Amount of time before (-#) or after (#) the available date to search for Movie
   - This is helpful to delay searching for a release to give the community time to perform the best encodes.
-  - Typically a Movie Availability of `Released` with a delay of `-21` or `-14` is suggested.
+  - Typically, a Movie Availability of `Released` with a delay of `-21` or `-14` is suggested.
 - RSS Sync interval - Interval in minutes. Set to zero to disable (this will stop all automatic release grabbing) Minimum: 10 minutes Maximum: 120 minutes
   - Please see [How does Whisparr find movies?](/whisparr/faq#how-does-whisparr-find-movies) for a better understanding of how RSS Sync will help you
 
@@ -630,14 +629,14 @@ The timer period can be different for Usenet and Torrents. Each profile can be a
 - Whisparr will monitor your download clients active downloads that use that category name. It monitors this via your download client's API.
 - When the download is completed, Whisparr will know the final file location as reported by your download client. This file location can be almost anywhere, as long as it is somewhere separate from your media folder and accessible by Whisparr
 - Whisparr will scan that completed file location for files that Whisparr can use. It will parse the file name to match it against the requested media. If it can do that, it will rename the file according to your specifications, and move it to the specified media location.
-- Atomic Moves (instant moves) are enabled by default. The file system and mounts must be the same for your completed download directory and your media library. If the the atomic move fails or your setup does not support hardlinks and atomic moves then Whisparr will fall back and copy the file then delete from the source which is IO intensive.
+- Atomic Moves (instant moves) are enabled by default. The file system and mounts must be the same for your completed download directory and your media library. If the the atomic move fails or your setup does not support hard links and atomic moves then Whisparr will fall back and copy the file then delete from the source which is IO intensive.
 
 ### Torrent Process
 
 - Whisparr will send a download request to your client, and associate it with a label or category name that you have configured in the download client settings. Examples: movies, tv, series, music, etc.
 - Whisparr will monitor your download clients active downloads that use that category name. This monitoring occurs via your download client's API.
-- Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within Whisparr under the specific download client). When files are imported to your media folder Whisparr will hardlink the file if supported by your setup or copy if not hardlinks are not supported.
-- Hardlinks are enabled by default. [A hardlink will allow not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hardlink creation fails or your setup does not support hardlinks then Whisparr will fall back and copy the file.
+- Completed files are left in their original location to allow you to seed the file (ratio or time can be adjusted in the download client or from within Whisparr under the specific download client). When files are imported to your media folder Whisparr will hardlinkthe file if supported by your setup or copy if not hard links are not supported.
+- Hard links are enabled by default. [A hard link will allow not use any additional disk space.](https://trash-guides.info/Hardlinks/Hardlinks-and-Instant-Moves/) The file system and mounts must be the same for your completed download directory and your media library. If the hard link creation fails or your setup does not support hard links then Whisparr will fall back and copy the file.
 - If the "Completed Download Handling - Remove" option is enabled in Whisparr's settings, Whisparr will delete the original file and torrent from your client, but only if the client reports that seeding is complete and torrent is stopped (i.e. paused).
 
 ## Download Clients
@@ -692,19 +691,19 @@ Select the download client you wish to add, and there will be a pop-up box to en
 
 - Whisparr is only able to set the seed ratio/time on clients that support setting this value via their API when the torrent is added. Seed goals can be set globally in the client itself or per tracker in \*Arr settings for each indexer. See the table below for client compatibility.
 
-|      Client       |                                Ratio                                 |                                    Time                                    |
-| :---------------: | :------------------------------------------------------------------: | :------------------------------------------------------------------------: |
-|       Aria2       |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|      Deluge       |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-| Download Station  | ![Not Supported](https://img.shields.io/badge/Supported-No-critical) |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|       Flood       |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-|     Hadouken      | ![Not Supported](https://img.shields.io/badge/Supported-No-critical) |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|    qBittorrent    |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-|     rTorrent      |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-| Torrent Blackhole | ![Not Supported](https://img.shields.io/badge/Supported-No-critical) |    ![Not Supported](https://img.shields.io/badge/Supported-No-critical)    |
-|   Transmission    |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   | ![Idle Limit](https://img.shields.io/badge/Supported-Idle%20Limit*-blue)\* |
-|     uTorrent      |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
-|       Vuze        |   ![Supported](https://img.shields.io/badge/Supported-Yes-success)   |      ![Supported](https://img.shields.io/badge/Supported-Yes-success)      |
+|      Client       |       Ratio        |                                    Time                                    |
+| :---------------: | :----------------: | :------------------------------------------------------------------------: |
+|       Aria2       | :white_check_mark: |                                    :x:                                     |
+|      Deluge       | :white_check_mark: |                                    :x:                                     |
+| Download Station  |        :x:         |                                    :x:                                     |
+|       Flood       | :white_check_mark: |                             :white_check_mark:                             |
+|     Hadouken      |        :x:         |                                    :x:                                     |
+|    qBittorrent    | :white_check_mark: |                             :white_check_mark:                             |
+|     rTorrent      | :white_check_mark: |                             :white_check_mark:                             |
+| Torrent Blackhole |        :x:         |                                    :x:                                     |
+|   Transmission    | :white_check_mark: | ![Idle Limit](https://img.shields.io/badge/Supported-Idle%20Limit*-blue)\* |
+|     uTorrent      | :white_check_mark: |                             :white_check_mark:                             |
+|       Vuze        | :white_check_mark: |                             :white_check_mark:                             |
 
 > ![Idle Limit](https://img.shields.io/badge/Supported-Idle%20Limit*-blue) - Transmission internally has an Idle Time check, but Whisparr compares it with the seeding time if the idle limit is set on a per-torrent basis. This is done as workaround to Transmission’s api limitations.{.is-info}
 
@@ -727,7 +726,7 @@ Select the download client you wish to add, and there will be a pop-up box to en
 
 If you download using a BitTorrent client, the process is slightly different:
 
-- Completed files are left in their original location to allow you to seed. When files are imported to your assigned library folder Whisparr will attempt to hardlink the file or fall back to copy (use double space) if hard links are not supported.
+- Completed files are left in their original location to allow you to seed. When files are imported to your assigned library folder Whisparr will attempt to hardlinkthe file or fall back to copy (use double space) if hard links are not supported.
 - If the "Completed Download Handling - Remove" option is enabled in settings, Whisparr will ask the torrent client to delete the original file and torrent, but this will only occur if the client reports that seeding is complete, the torrent is in the same category (i.e. not using a post-import category), the seed goal reached is supported by Whisparr, and torrent is paused (stopped).
 
 ### Failed Download Handling
